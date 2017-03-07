@@ -1,56 +1,48 @@
-import Exponent from 'exponent';
+import Exponent, { Components } from 'exponent';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-} from 'react-native';
-import { fetchMeetups } from './constants/api';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Colors from './constants/Colors';
+import { HomeScreen } from './src/screens';
+import { cachedFonts } from './helpers';
+
+EStyleSheet.build(Colors);
 
 class App extends React.Component {
-  static defaultProps = {
-    fetchMeetups
-  }
-
   state = {
-    loading: false,
-    meetups: []
+    fontLoaded: false
   }
 
-  async componentDidMount() {
-    this.setState({ loading: true });
-    const data = await this.props.fetchMeetups();
-    this.setState({ loading: false, meetups: data.meetups });
+  componentDidMount() {
+    this._loadAssetsAsync();
+  }
+
+  async _loadAssetsAsync() {
+    const fontAssets = cachedFonts([
+      {
+        catamaran: require('./assets/fonts/Catamaran-Regular.ttf')
+      },
+      {
+        catamaranBold: require('./assets/fonts/Catamaran-Bold.ttf')
+      },
+      {
+        catamaranLight: require('./assets/fonts/Catamaran-Light.ttf')
+      },
+      {
+        catamaranMedium: require('./assets/fonts/Catamaran-Medium.ttf')
+      }
+    ]);
+
+    await Promise.all(fontAssets);
+
+    this.setState({ fontLoaded: true });
   }
 
   render() {
-    /*if (this.state.loading) {
-      return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" />
-        </View>
-      )
-    }*/
-    return (
-      <View style={styles.container}>
-        <Text>MeetMe!</Text>
-
-        {this.state.meetups.map((meetup, i) => {
-          <Text key={i}>meetup.title</Text>
-        })}
-      </View>
-    );
+    if (!this.state.fontLoaded) {
+      return <Components.AppLoading />;
+    }
+    return <HomeScreen />;
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 Exponent.registerRootComponent(App);
