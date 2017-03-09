@@ -1,9 +1,14 @@
+// Libraries
 import Exponent, { Components } from 'exponent';
 import React from 'react';
+import { Provider } from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
+// Components
+import Root from './src/Root';
+// Others
 import Colors from './constants/Colors';
 import { cachedFonts } from './helpers';
-import Root from './src/Root';
+import store from './src/redux/store';
 
 EStyleSheet.build(Colors);
 
@@ -41,7 +46,11 @@ class App extends React.Component {
     if (!this.state.fontLoaded) {
       return <Components.AppLoading />;
     }
-    return <Root />;
+    return (
+      <Provider store={store}>
+        <Root />
+      </Provider>
+    );
   }
 }
 
