@@ -5,7 +5,7 @@ import styles from './styles/MyMeetupsList';
 const MyMeetupsList = ({ meetups }) => (
   <View style={styles.root}>
     <View style={styles.titleContainer}>
-      <Text style={styles.title}>My Meetups</Text>
+      <Text style={styles.title}>Nearby Restaurants</Text>
     </View>
     <View style={styles.contentContainer}>
       <ScrollView horizontal>
@@ -22,7 +22,7 @@ const MyMeetupsList = ({ meetups }) => (
                 {meetup.group.name}
               </Text>
               <Text style={styles.meetupCardMetaDate}>
-                Mar 2m 6:00pm
+                Rating is 4 out of 5
               </Text>
             </View>
 

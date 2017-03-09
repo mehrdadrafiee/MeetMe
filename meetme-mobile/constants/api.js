@@ -1,8 +1,17 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 
-axios.defaults.baseURL = 'http://localhost:3000/api';
+let url;
 
-const fakeGroupId = '58bcf837dcc1ae64bbc847a1';
+if (Platform.OS !== 'ios') {
+  url = 'http:10.0.3.2:3000/api';
+} else {
+  url = 'http://localhost:3000/api';
+}
+
+axios.defaults.baseURL = url;
+
+const fakeGroupId = '58bf0d6137bc82e1a3bcce48';
 
 class MeetupApi {
   constructor() {
