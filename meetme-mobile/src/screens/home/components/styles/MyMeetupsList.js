@@ -10,7 +10,7 @@ const styles = EStyleSheet.create({
     paddingVertical: '2.5%'
   },
   title: {
-    color: '$whiteColor',
+    color: '$blackColor',
     fontSize: 25,
     fontFamily: 'catamaranLight'
   },

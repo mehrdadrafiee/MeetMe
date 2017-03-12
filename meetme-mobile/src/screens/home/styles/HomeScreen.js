@@ -7,12 +7,15 @@ const styles = EStyleSheet.create({
     backgroundColor: '$whiteColor'
   },
   topContainer: {
-    flex: 0.8,
+    flex: 0.1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
+  },
+  mapContainer: {
+    flex: 0.8
   },
   bottomContainer: {
-    flex: 1,
+    flex: 1
   }
 });
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
+import { Components } from 'exponent';
 import { connect } from 'react-redux';
 import { MaterialIcons } from '@exponent/vector-icons';
 
@@ -38,6 +39,21 @@ class HomeScreen extends Component {
     this.props.fetchMyMeetups();
   }
 
+  getInitialState() {
+    return {
+      region: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      },
+    };
+  }
+
+  onRegionChange(region) {
+    this.setState({ region });
+  }
+
   render() {
     const {
       myMeetups: {
@@ -58,9 +74,17 @@ class HomeScreen extends Component {
     return (
       <View style={styles.root}>
         <View style={styles.topContainer}>
-          <Text>HomeScreen</Text>
-          <Text>Google Maps</Text>
+          <Text>Home</Text>
         </View>
+        <Components.MapView
+          style={styles.mapContainer}
+          initialRegion={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
         <View style={styles.bottomContainer}>
           <MyMeetupsList meetups={data} />
         </View>

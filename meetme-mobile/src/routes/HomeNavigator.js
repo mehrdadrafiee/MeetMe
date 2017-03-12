@@ -23,8 +23,8 @@ export default TabNavigator({
   tabBarOptions: {
     showLabel: false,
     showIcon: true,
-    inactiveTintColor: Colors.darkBlueColor,
-    activeTintColor: Colors.redColor,
+    inactiveTintColor: Colors.grayColor,
+    activeTintColor: Colors.blackColor,
     pressColor: Colors.redColor,
     indicatorStyle: { backgroundColor: Colors.redColor },
     style: {
