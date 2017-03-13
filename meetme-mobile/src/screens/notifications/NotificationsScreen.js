@@ -7,8 +7,7 @@ class NotificationsScreen extends Component {
   static navigationOptions = {
     header: {
       style: {
-        backgroundColor: Colors.whiteColor,
-        height: 20
+        backgroundColor: Colors.whiteColor
       }
     },
     

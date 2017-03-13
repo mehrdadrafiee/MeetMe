@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Components } from 'exponent';
 import { connect } from 'react-redux';
+import { Button, Icon } from 'native-base';
 import { MaterialIcons } from '@exponent/vector-icons';
 
 import { LoadingScreen } from '../../commons';
@@ -15,14 +16,29 @@ import styles from './styles/HomeScreen';
   state => ({
     myMeetups: state.home.myMeetups
   }),
-  { fetchMyMeetups })
+  { fetchMyMeetups }
+)
 class HomeScreen extends Component {
   static navigationOptions = {
-    header: {
-      style: {
-        backgroundColor: Colors.whiteColor,
-        height: 20
-      }
+    header: ({ navigate }) => {
+      const style = { backgroundColor: Colors.whiteColor };
+      const right = (
+        <View>
+          <Button
+          transparent
+          onPress={() => navigate('CreateMeetup')}>
+            <Icon
+            name="md-add-circle"
+            style={{
+              fontSize: 30,
+              color: Colors.blackColor
+            }}
+            />
+          </Button>
+        </View>
+      );
+
+      return {style, right };
     },
     tabBar: {
       icon: ({ tintColor }) => (
@@ -37,21 +53,6 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     this.props.fetchMyMeetups();
-  }
-
-  getInitialState() {
-    return {
-      region: {
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      },
-    };
-  }
-
-  onRegionChange(region) {
-    this.setState({ region });
   }
 
   render() {
