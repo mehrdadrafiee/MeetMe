@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import styles from './styles/MyMeetupsList';
+import { Icon } from 'native-base';
 
 const MyMeetupsList = ({ meetups }) => (
   <View style={styles.root}>
@@ -22,10 +23,14 @@ const MyMeetupsList = ({ meetups }) => (
                 {meetup.group.name}
               </Text>
               <Text style={styles.meetupCardMetaDate}>
-                Rating is 4 out of 5
+                Rating:&nbsp;
+                  <Icon name="md-star" style={{ fontSize: 15 }} />
+                  <Icon name="md-star" style={{ fontSize: 15 }} />
+                  <Icon name="md-star" style={{ fontSize: 15 }} />
+                  <Icon name="md-star" style={{ fontSize: 15 }} />
+                  <Icon name="md-star-half" style={{ fontSize: 15 }} />
               </Text>
             </View>
-
           </View>
         ))}
       </ScrollView>
