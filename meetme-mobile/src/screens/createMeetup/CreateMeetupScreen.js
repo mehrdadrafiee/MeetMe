@@ -1,34 +1,84 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Button, Icon } from 'native-base';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { MaterialIcons } from '@exponent/vector-icons';
+import { FormLabel, FormInput, Button } from 'react-native-elements';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import Colors from '../../../constants/Colors';
+import styles from './styles/CreateMeetupScreen';
 
 class CreateMeetupScreen extends Component {
   static navigationOptions = {
-    title: 'Create new Meeting',
+    title: 'Create a new hangout',
     header: ({ goBack }) => {
       const style = { backgroundColor: Colors.whiteColor };
       const titleStyle = { color: Colors.blackColor };
       const left = (
-        <Button transparent onPress={() => goBack()}>
-          <Icon
-            name="md-close"
-            style={{
-              fontSize: 30,
-              color: Colors.blackColor
-            }}
-          />
-        </Button>
+        <TouchableOpacity style={styles.iconClose} onPress={() => goBack()}>
+          <MaterialIcons 
+            name="close"
+            size={30}
+            color="Colors.blackColor"/>
+        </TouchableOpacity>
       )
 
       return { style, titleStyle, left };
     }
   }
+
+  state = {
+    isDateTimePickerVisible: false
+  }
+
+  _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true })
+
+  _handleDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
+
+  _handleDatePicked = date => {
+    this.setState({ date });
+    this._handleDateTimePicker();
+  }
+
   render() {
     return (
-      <View>
-        <Text>Here is the text</Text>
+      <View style={styles.root}>
+        <View style={styles.container}>
+          <View style={styles.item}>
+            <FormLabel fontFamily="catamaran">Title</FormLabel>
+            <FormInput
+              selectionColor={Colors.blackColor}
+            />
+          </View>
+          <View style={styles.item}>
+            <FormLabel fontFamily="catamaran">Description</FormLabel>
+            <FormInput
+              selectionColor={Colors.blackColor}
+              multiline
+            />
+          </View>
+          <View style={styles.item}>
+            <Button
+              onPress={this._showDateTimePicker}
+              title="Not today? Then pick a day!"
+              fontFamily="catamaran"
+              raised
+            />
+          </View>
+          <View style={styles.buttonCreate}>
+            <Button
+              backgroundColor={Colors.darkBlueColor}
+              title="Create the hangout!"
+              fontFamily="catamaran"
+              raised
+            />
+          </View>
+        </View>
+        <DateTimePicker
+          isVisible={this.state.isDateTimePickerVisible}
+          onConfirm={this._handleDatePicked}
+          onCancel={this._handleDateTimePicker}
+          mode="datetime"
+        />
       </View>
     );
   }

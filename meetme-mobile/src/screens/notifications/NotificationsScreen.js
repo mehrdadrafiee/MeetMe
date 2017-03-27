@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { MaterialIcons } from '@exponent/vector-icons';
 import Colors from '../../../constants/Colors';
+import styles from './styles/NotificationsScreen';
 
 class NotificationsScreen extends Component {
   static navigationOptions = {
@@ -24,7 +25,7 @@ class NotificationsScreen extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.root}>
         <Text>Notifications</Text>
       </View>
     );

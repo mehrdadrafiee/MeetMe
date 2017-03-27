@@ -7,7 +7,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Root from './src/Root';
 // Others
 import Colors from './constants/Colors';
-import { cachedFonts } from './helpers';
+import { fontAssets } from './helpers';
 import store from './src/redux/store';
 
 EStyleSheet.build(Colors);
@@ -22,20 +22,6 @@ class App extends React.Component {
   }
 
   async _loadAssetsAsync() {
-    const fontAssets = cachedFonts([
-      {
-        catamaran: require('./assets/fonts/Catamaran-Regular.ttf')
-      },
-      {
-        catamaranBold: require('./assets/fonts/Catamaran-Bold.ttf')
-      },
-      {
-        catamaranLight: require('./assets/fonts/Catamaran-Light.ttf')
-      },
-      {
-        catamaranMedium: require('./assets/fonts/Catamaran-Medium.ttf')
-      }
-    ]);
 
     await Promise.all(fontAssets);
 
