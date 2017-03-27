@@ -3,7 +3,8 @@ import Colors from '../../constants/Colors';
 import {
   HomeScreen,
   NotificationsScreen,
-  ProfileScreen
+  ProfileScreen,
+  ChatScreen
 } from '../screens';
 
 export default TabNavigator({
@@ -12,6 +13,9 @@ export default TabNavigator({
   },
   Notifications: {
     screen: NotificationsScreen
+  },
+  Chat: {
+    screen: ChatScreen
   },
   Profile: {
     screen: ProfileScreen

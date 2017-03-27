@@ -22,7 +22,11 @@ const styles = EStyleSheet.create({
     width: 175,
     marginHorizontal: '1.5%',
     backgroundColor: '$darkBlueColor',
-    borderWidth: 0.5
+    borderWidth: 0.5,
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: 0.5,
+    shadowRadius: 5
   },
   meetupCardTopContainer: {
     flex: 1,

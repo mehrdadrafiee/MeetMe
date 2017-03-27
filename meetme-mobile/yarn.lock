@@ -2637,6 +2637,10 @@ react-native-animated-modal@^1.0.1:
   dependencies:
     react-native-animatable "^1.1.1"
 
+react-native-contacts@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-0.8.0.tgz#dad1faf3419f113587e8b499d4186ad5ee65ed7b"
+
 react-native-debugger-open:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/react-native-debugger-open/-/react-native-debugger-open-0.3.2.tgz#ac90d33e97ab9aa9f815eb8c9f6f9efb4a09a733"
