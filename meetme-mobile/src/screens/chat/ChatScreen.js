@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Button, Icon } from 'native-base';
-import { MaterialIcons } from '@exponent/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { LoadingScreen } from '../../commons';
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Components, Location } from 'exponent';
+import { Components, Location } from 'expo';
 import { connect } from 'react-redux';
 import { Button, Icon } from 'native-base';
-import { MaterialIcons } from '@exponent/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { LoadingScreen } from '../../commons';
 import { MyMeetupsList } from './components';
@@ -107,9 +107,6 @@ class HomeScreen extends Component {
     }
     return (
       <View style={styles.root}>
-        <View style={styles.topContainer}>
-          <Text>Home</Text>
-        </View>
         <Components.MapView
           style={styles.mapContainer}
           showsUserLocation={true}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@exponent/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
@@ -9,7 +9,7 @@ import styles from './styles/CreateMeetupScreen';
 
 class CreateMeetupScreen extends Component {
   static navigationOptions = {
-    title: 'Create a new hangout',
+    title: 'Create hangout',
     header: ({ goBack }) => {
       const style = { backgroundColor: Colors.whiteColor };
       const titleStyle = { color: Colors.blackColor };

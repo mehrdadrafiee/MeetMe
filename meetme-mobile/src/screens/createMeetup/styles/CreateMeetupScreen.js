@@ -9,7 +9,7 @@ const styles = EStyleSheet.create({
   },
   container: {
     flex: 1,
-    width: 350
+    width: 300
   },
   item: {
     marginVertical: 20
