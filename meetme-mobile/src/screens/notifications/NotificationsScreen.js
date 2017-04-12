@@ -32,22 +32,6 @@ class NotificationsScreen extends Component {
 
   render() {
     return (
-      // <View style={styles.root}>
-      //   <Card>
-      //     <CardTitle>
-      //       <Text style={styles.title}>Card Title</Text>
-      //     </CardTitle>
-      //     <CardContent>
-      //       <Text>Content</Text>
-      //     </CardContent>
-      //     <CardAction >
-      //       <Button
-      //         style={styles.button}
-      //         title='button 1'
-      //         onPress={() => {}} />
-      //     </CardAction>
-      //   </Card>
-      // </View>
       <ScrollView>
         <View style={styles.container}>
         <Text>Basic</Text>
