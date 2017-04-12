@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
-import styles from './styles/ProfileScreen';
+import styles from './styles/ContactsScreen';
+import { Contacts } from 'react-native-contacts';
 
-class ProfileScreen extends Component {
+class ContactsScreen extends Component {
   static navigationOptions = {
     header: {
       style: {
         backgroundColor: Colors.whiteColor
       }
     },
-
+    
     tabBar: {
       icon: ({ tintColor }) => (
         <MaterialIcons 
-          name="person"
+          name="contacts"
           size={25}
           color={tintColor}
         />
@@ -26,10 +27,10 @@ class ProfileScreen extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <Text>Profile Screen</Text>
+        <Text>Contacts</Text>
       </View>
     );
   }
 }
 
-export default ProfileScreen;
+export default ContactsScreen;

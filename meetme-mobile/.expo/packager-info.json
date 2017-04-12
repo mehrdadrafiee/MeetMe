@@ -1,10 +1,10 @@
 {
   "exponentServerPort": null,
   "packagerPort": 19001,
-  "packagerPid": 19228,
+  "packagerPid": 683,
   "exponentServerNgrokUrl": null,
   "packagerNgrokUrl": "https://packager.4c-qkm.mehrdadrafiee.meetme-mobile.exp.direct",
-  "ngrokPid": 19255,
+  "ngrokPid": 717,
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://4c-qkm.mehrdadrafiee.meetme-mobile.exp.direct"
 }

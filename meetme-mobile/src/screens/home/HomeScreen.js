@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import MapView from 'react-native-maps';
 import { Components, Location } from 'expo';
 import { connect } from 'react-redux';
 import { Button, Icon } from 'native-base';
@@ -14,10 +15,12 @@ import styles from './styles/HomeScreen';
 
 @connect(
   state => ({
-    myMeetups: state.home.myMeetups
+    myMeetups: state.home.myMeetups,
+    currentRegion: 'unknown'
   }),
   { fetchMyMeetups }
 )
+
 class HomeScreen extends Component {
   static navigationOptions = {
     header: ({ navigate }) => {
@@ -36,7 +39,7 @@ class HomeScreen extends Component {
     tabBar: {
       icon: ({ tintColor }) => (
         <MaterialIcons 
-          name="home"
+          name="map"
           size={25}
           color={tintColor}
         />
@@ -44,39 +47,39 @@ class HomeScreen extends Component {
     }
   }
 
-  state = {
-    region: {
-      latitude: 34.0195,
-      longitude: -118.4912,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421
-    },
-    markers: {
-      latlng: [ 34.0195, -118.4912 ],
-      title: "Marker title",
-      description: "marker description"
-    },
-    initialPosition: 'unknown',
-    lastPosition: 'unknown',
-  }
+  // state = {
+  //   currentRegion: 'unknown'
+  // }
 
   watchID: ?number = null;
 
   componentDidMount() {
     this.props.fetchMyMeetups();
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        var initialPosition = JSON.stringify(position);
-        this.setState({initialPosition});
-        console.log(initialPosition);
+    let { width, height } = Dimensions.get('window');
+    const ASPECT_RATIO = width / height;
+    const LATITUDE_DELTA = 0.01;
+    const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log("Here is the postion: " + position.coords);
+      this.setState({currentRegion: {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }});
       },
-      (error) => alert(JSON.stringify(error)),
+      (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      var lastPosition = JSON.stringify(position);
-      this.setState({lastPosition});
+      this.setState({currentRegion: {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }});
     });
   }
 
@@ -109,9 +112,8 @@ class HomeScreen extends Component {
       <View style={styles.root}>
         <Components.MapView
           style={styles.mapContainer}
-          showsUserLocation={true}
-          region={this.state.region}
-          onRegionChange={this.regionChanged}>
+          region={this.state.currentRegion}
+          showsUserLocation={true}>
           <Components.MapView.Marker
             coordinate={{latitude: 34.0195, longitude: -118.4912}}
             title={"title"}

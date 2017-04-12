@@ -15,9 +15,9 @@
     hoist-non-react-statics "^1.2.0"
     lodash "^4.15.0"
 
-"@shoutem/theme@git+https://github.com/GeekyAnts/theme.git#caching":
+"@shoutem/theme@https://github.com/GeekyAnts/theme#caching":
   version "0.8.8"
-  resolved "git+https://github.com/GeekyAnts/theme.git#7c8d0ab19eb452c8c465bbd8e27f8cdc32fddba5"
+  resolved "https://github.com/GeekyAnts/theme#7c8d0ab19eb452c8c465bbd8e27f8cdc32fddba5"
   dependencies:
     hoist-non-react-statics "^1.0.5"
     lodash "^4.10.1"
@@ -2170,11 +2170,11 @@ lodash@^3.5.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.10.1, lodash@^4.11.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.16.6, lodash@^4.3.0, lodash@^4.6.1:
+lodash@^4.0.0, lodash@^4.10.1, lodash@^4.11.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.16.6, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
-lodash@^4.2.0, lodash@^4.2.1, lodash@~4.11.1:
+lodash@~4.11.1:
   version "4.11.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.11.2.tgz#d6b4338b110a58e21dae5cebcfdbbfd2bc4cdb3b"
 
@@ -2269,17 +2269,13 @@ min-document@^2.19.0:
   dependencies:
     brace-expansion "^1.0.0"
 
-minimist@0.0.8:
+minimist@0.0.8, minimist@~0.0.1:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
 
 minimist@^1.1.0, minimist@^1.1.1, minimist@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
-
-minimist@~0.0.1:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
 
 mkdirp@^0.5.1:
   version "0.5.1"
@@ -2621,9 +2617,13 @@ react-native-animatable@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.1.1.tgz#00ddc72985f62f62a11a505abb1a06e77a92cd8a"
 
-react-native-contacts@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-0.8.0.tgz#dad1faf3419f113587e8b499d4186ad5ee65ed7b"
+react-native-card-view@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-card-view/-/react-native-card-view-0.0.3.tgz#8db9ac4a3f01d08f8bd9f79343082d87fdf09907"
+
+react-native-contacts@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-0.8.1.tgz#ff1e90ab7da432763d2c5a62bd22e2157caffc70"
 
 react-native-debugger-open@^0.3.2:
   version "0.3.3"

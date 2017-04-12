@@ -1,13 +1,16 @@
 import { TabNavigator } from 'react-navigation';
 import Colors from '../../constants/Colors';
 import {
+  ContactsScreen,
   HomeScreen,
   NotificationsScreen,
-  ProfileScreen,
   ChatScreen
 } from '../screens';
 
 export default TabNavigator({
+  Contacts: {
+    screen: ContactsScreen
+  },
   Home: {
     screen: HomeScreen
   },
@@ -16,9 +19,6 @@ export default TabNavigator({
   },
   Chat: {
     screen: ChatScreen
-  },
-  Profile: {
-    screen: ProfileScreen
   }
 }, {
   swipeEnabled: true,
@@ -29,8 +29,8 @@ export default TabNavigator({
     showIcon: true,
     inactiveTintColor: Colors.grayColor,
     activeTintColor: Colors.blackColor,
-    pressColor: Colors.redColor,
-    indicatorStyle: { backgroundColor: Colors.redColor },
+    pressColor: Colors.blackColor,
+    indicatorStyle: { backgroundColor: Colors.blackColor },
     style: {
       backgroundColor: Colors.whiteColor
     }
