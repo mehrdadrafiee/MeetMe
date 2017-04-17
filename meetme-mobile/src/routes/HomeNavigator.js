@@ -4,7 +4,8 @@ import {
   ContactsScreen,
   HomeScreen,
   NotificationsScreen,
-  ChatScreen
+  ChatScreen,
+  AnimatedViews
 } from '../screens';
 
 export default TabNavigator({
@@ -19,9 +20,12 @@ export default TabNavigator({
   },
   Chat: {
     screen: ChatScreen
+  },
+  AnimatedViews: {
+    screen: AnimatedViews
   }
 }, {
-  swipeEnabled: true,
+  swipeEnabled: false,
   animationEnabled: true,
   tabBarPosition: 'bottom',
   tabBarOptions: {

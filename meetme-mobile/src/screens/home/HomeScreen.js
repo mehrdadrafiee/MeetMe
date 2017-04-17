@@ -25,7 +25,7 @@ class HomeScreen extends Component {
   static navigationOptions = {
     header: ({ navigate }) => {
       const style = { backgroundColor: Colors.whiteColor };
-      const right = (
+      const left = (
         <TouchableOpacity style={styles.iconAdd} onPress={() => navigate('CreateMeetup')}>
           <MaterialIcons
             name="add-circle"
@@ -33,8 +33,17 @@ class HomeScreen extends Component {
             color="Colors.blackColor" />
         </TouchableOpacity>
       );
+      const right = (
+        <TouchableOpacity>
+          <MaterialIcons
+            name="navigate-next"
+            size={30}
+            color="Colors.blackColor"
+            />
+        </TouchableOpacity>
+      );
 
-      return {style, right };
+      return {style, left, right };
     },
     tabBar: {
       icon: ({ tintColor }) => (

@@ -1,57 +1,19 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const styles = EStyleSheet.create({
-  root: {
+  container: {
     flex: 1
   },
-  titleContainer: {
-    flex: 0.1,
-    paddingHorizontal: '2.5%',
-    paddingVertical: '2.5%'
+  card: {
+    width: 300
   },
   title: {
+    fontSize: 20,
     color: '$blackColor',
-    fontSize: 25,
-    fontFamily: 'catamaranLight'
-  },
-  contentContainer: {
-    flex: 1
-  },
-  meetupCard: {
-    height: 200,
-    width: 175,
-    marginHorizontal: '1.5%',
-    backgroundColor: '$darkBlueColor',
-    borderWidth: 0.5,
-    shadowColor: '#000000',
-    shadowOffset: {width: 0, height: 10},
-    shadowOpacity: 0.5,
-    shadowRadius: 5
-  },
-  meetupCardTopContainer: {
-    flex: 1,
-    position: 'relative'
-  },
-  meetupCardTitle: {
     fontFamily: 'catamaranLight',
-    position: 'absolute',
-    color: '$whiteColor',
-    top: '2%',
-    left: '2.5%'
   },
-  meetupCardBottomContainer: {
-    flex: 0.4,
-    backgroundColor: '$whiteColor',
-    justifyContent: 'center',
-    paddingHorizontal: '2.5%'
-  },
-  meetupCardMetaName: {
-    fontSize: 15,
-    fontFamily: 'catamaranMedium'
-  },
-  meetupCardMetaDate: {
-    fontSize: 13,
-    fontFamily: 'catamaranLight'
+  button: {
+    marginRight: 10
   }
 });
 
