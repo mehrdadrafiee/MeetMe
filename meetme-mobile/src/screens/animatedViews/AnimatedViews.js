@@ -132,7 +132,6 @@ function getMarkerState(panX, panY, scrollY, i) {
 }
 
 class AnimatedViews extends React.Component {
-
   static navigationOptions = {
     title: 'NEARBY PLACES',
     header: ({ navigate }) => {
@@ -305,11 +304,8 @@ class AnimatedViews extends React.Component {
   }
 
   onRegionChangeComplete = (region) => {
-    
     const {initialRegion} = this.state;
-     
     this.setState({initialRegion: region});
-    
     if (initialRegion !== null) {
       return;
     }
@@ -319,19 +315,15 @@ class AnimatedViews extends React.Component {
   }
 
   generateMarkers(markers) {
-
     const { panX, panY, scrollY } = this.state;
     const animations = markers.map((m, i) =>
       getMarkerState(panX, panY, scrollY, i));
-    
     console.log('markers.length', markers.length)
     this.setState({ animations, markers });
-
     this.startAnimate();
   }
 
   startAnimate() {
-
     const { region, panX, panY, scrollX, markers } = this.state;
     if(markers.length > 1) {
       region.stopAnimation();
@@ -355,8 +347,8 @@ class AnimatedViews extends React.Component {
     // `location=${region.latitude},${region.longitude}` +
     `location=${LATITUDE},${LONGITUDE}` +
     "&radius=500&type=restaurant&key=" + GooglePlacesAPI
-    
     console.log(url);
+
     let markes = [];
 
     await fetch(url)
@@ -364,12 +356,9 @@ class AnimatedViews extends React.Component {
       return response.json();
     })
     .then((responseData) => {
-       
       console.log('responseDataresponseData', responseData)
       if(responseData && responseData.results) {
-
         console.log('responseDataresponseData', responseData.results.length)
-        
         responseData.results.forEach((r, index) => {
           markes.push({id: index,
             name: r.name,
@@ -393,7 +382,6 @@ class AnimatedViews extends React.Component {
 
   getUrlImage(item) {
     let url = item.icon;
-
     if(item.photos[0]) {
       url =  "https://maps.googleapis.com/maps/api/place/photo?"+
       "maxwidth=400&photoreference="+ item.photos[0].photo_reference +
@@ -452,7 +440,7 @@ class AnimatedViews extends React.Component {
                 <Components.MapView.Marker
                   key={marker.id}
                   coordinate={marker.coordinate}
-                  image={marker.image}
+                  //image={marker.image}
                   selected={selected}
                 />
               );
@@ -523,6 +511,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 3,
     borderColor: '#000'
+  },
+  iconAdd: {
+    marginLeft: 10
   }
 });
 

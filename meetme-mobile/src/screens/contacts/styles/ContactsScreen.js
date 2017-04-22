@@ -2,14 +2,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Colors from '../../../../constants/Colors';
 
 const styles = EStyleSheet.create({
-  searchBar: {
-    paddingLeft: 30,
-    fontSize: 22,
-    height: 10,
-    flex: .1,
-    borderWidth: 9,
-    borderColor: 'darkgray'
-  },
   listView: {
     alignItems: 'center'
   },
