@@ -13,7 +13,7 @@ import {
 const MyMeetupsList = ({ meetups }) => (
   <View style={styles.container}>
     <ScrollView horizontal>
-    {meetups.map((meetup, i) => (
+    {meetups && meetups.map((meetup, i) => (
     <Card key={i}>
       <CardImage>
         <Image

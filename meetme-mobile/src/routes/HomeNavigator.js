@@ -13,7 +13,7 @@ export default TabNavigator({
     screen: ContactsScreen
   },
   Home: {
-    screen: HomeScreen
+    screen: AnimatedViews
   },
   Notifications: {
     screen: NotificationsScreen
@@ -22,7 +22,7 @@ export default TabNavigator({
     screen: ChatScreen
   },
   AnimatedViews: {
-    screen: AnimatedViews
+    screen: HomeScreen
   }
 }, {
   swipeEnabled: false,

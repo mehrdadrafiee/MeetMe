@@ -9,7 +9,7 @@ const styles = EStyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: '$blackColor',
+    color: 'black',
     fontFamily: 'catamaranLight',
   },
   button: {

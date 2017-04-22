@@ -30,7 +30,7 @@ class HomeScreen extends Component {
           <MaterialIcons
             name="add-circle"
             size={30}
-            color="Colors.blackColor" />
+            color={Colors.blackColor} />
         </TouchableOpacity>
       );
       const right = (
@@ -38,7 +38,7 @@ class HomeScreen extends Component {
           <MaterialIcons
             name="navigate-next"
             size={30}
-            color="Colors.blackColor"
+            color={Colors.blackColor}
             />
         </TouchableOpacity>
       );

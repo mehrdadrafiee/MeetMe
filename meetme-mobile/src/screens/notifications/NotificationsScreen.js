@@ -13,6 +13,7 @@ import {
 
 class NotificationsScreen extends Component {
   static navigationOptions = {
+    title: 'NOTIFICATIONS',
     header: {
       style: {
         backgroundColor: Colors.whiteColor
