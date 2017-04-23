@@ -66,13 +66,14 @@ class ContactsScreen extends Component {
     if (contacts.length > 0) {
       this.setState({dataSource: ds.cloneWithRows(contacts)});  
     }
+
     return contacts;
   }
 
   render() {
     return (
       <ListView contentContainerStyle={styles.listView} dataSource={this.state.dataSource} renderRow={(rowData) =>
-        <View style={styles.container} >
+        <View style={styles.container}>
           <View style={styles.imageContainer}>
             <Image
               style={{width: 30, height: 30, borderRadius: 15}}
