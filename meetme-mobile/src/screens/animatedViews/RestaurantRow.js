@@ -36,7 +36,7 @@ export default class RestaurantRow extends React.Component {
             maxStars={5}
             rating={rating}
             starColor={'black'}
-            starSize={20}
+            starSize={15}
           />
           <Button
             onPress={() => {}}
