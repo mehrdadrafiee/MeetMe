@@ -77,7 +77,7 @@ class ContactsScreen extends Component {
           <View style={styles.imageContainer}>
             <Image
               style={{width: 30, height: 30, borderRadius: 15}}
-              source={{uri: 'https://getmdl.io/assets/demos/image_card.jpg'}}
+              source={{uri: 'https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-contact-128.png'}}
             />
           </View>
           <View style={styles.infoContainer}>

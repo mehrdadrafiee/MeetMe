@@ -4,7 +4,8 @@ import {
   View,
   Dimensions,
   Animated,
-  TouchableOpacity
+  TouchableOpacity,
+  Navigator
 } from 'react-native';
 
 import { MaterialIcons } from '@expo/vector-icons';
@@ -20,9 +21,9 @@ import Colors from '../../../constants/Colors';
 
 import { GooglePlacesAPI } from '../../config';
 
-const screen = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-const ASPECT_RATIO = screen.width / screen.height;
+const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
 const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0122;
@@ -30,10 +31,10 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const ITEM_SPACING = 10;
 const ITEM_PREVIEW = 10;
-const ITEM_WIDTH = screen.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
+const ITEM_WIDTH = width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
 const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
 const ITEM_PREVIEW_HEIGHT = 150;
-const SCALE_END = screen.width / ITEM_WIDTH;
+const SCALE_END = width / ITEM_WIDTH;
 const BREAKPOINT1 = 246;
 const BREAKPOINT2 = 350;
 const ONE = new Animated.Value(1);
@@ -213,7 +214,11 @@ class AnimatedViews extends React.Component {
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
-      })
+      }),
+      coordinate: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE
+      }
     };
   }
 
@@ -222,6 +227,23 @@ class AnimatedViews extends React.Component {
 
     panX.addListener(this.onPanXChange);
     panY.addListener(this.onPanYChange);
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      if (position && position.coords){
+        this.onRegionChangeComplete(position.coords);
+
+      }
+    }, (error) => {
+      
+      Alert.alert(
+        'Error',
+        "Please Activate your location !",
+        [
+          {text: 'Close', onPress: () => {}},
+        ]
+      );
+    }
+    );
   }
   
   onStartShouldSetPanResponder = (e) => {
@@ -231,7 +253,7 @@ class AnimatedViews extends React.Component {
     const { panY } = this.state;
     const { pageY } = e.nativeEvent;
     const topOfMainWindow = ITEM_PREVIEW_HEIGHT + panY.__getValue();
-    const topOfTap = screen.height - pageY;
+    const topOfTap = height - pageY;
 
     return topOfTap < topOfMainWindow;
   }
@@ -240,7 +262,7 @@ class AnimatedViews extends React.Component {
     const { panY } = this.state;
     const { pageY } = e.nativeEvent;
     const topOfMainWindow = ITEM_PREVIEW_HEIGHT + panY.__getValue();
-    const topOfTap = screen.height - pageY;
+    const topOfTap = height - pageY;
 
     return topOfTap < topOfMainWindow;
   }
@@ -344,8 +366,8 @@ class AnimatedViews extends React.Component {
   async findRestaurant(region) {
 
     const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-    // `location=${region.latitude},${region.longitude}` +
-    `location=${LATITUDE},${LONGITUDE}` +
+    `location=${region.latitude},${region.longitude}` +
+    // `location=${LATITUDE},${LONGITUDE}` +
     "&radius=500&type=restaurant&key=" + GooglePlacesAPI
     console.log(url);
 
@@ -412,8 +434,8 @@ class AnimatedViews extends React.Component {
           horizontal={canMoveHorizontal}
           xMode="snap"
           snapSpacingX={SNAP_WIDTH}
-          yBounds={[-1 * screen.height, 0]}
-          xBounds={[-screen.width * (markers.length - 1), 0]}
+          yBounds={[-1 * height, 0]}
+          xBounds={[-width * (markers.length - 1), 0]}
           panY={panY}
           panX={panX}
           onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
@@ -426,8 +448,20 @@ class AnimatedViews extends React.Component {
             initialRegion={initialRegion}
             onRegionChange={this.onRegionChange}
             showsUserLocation={true}
+            followsUserLocation={true}
+            showsMyLocationButton={true}
+            showsCompass={true}
+            showsBuildings={true}
+            zoomEnabled={true}
+            rotateEnabled={true}
+            loadingEnabled={true}
             showsTraffic={true}
             onRegionChangeComplete={this.onRegionChangeComplete}
+            legalLabelInsets={{top: 10,
+              left: 10,
+              bottom: 10,
+              right: 10
+            }}
           >
             {markers.map((marker, i) => {
               const {
@@ -463,7 +497,7 @@ class AnimatedViews extends React.Component {
                     transform: [
                       { translateY },
                       { translateX },
-                      { scale },
+                      { scale }
                     ]
                   }]}
                 >
@@ -496,9 +530,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: (ITEM_SPACING / 2) + ITEM_PREVIEW,
     position: 'absolute',
-    // top: screen.height - ITEM_PREVIEW_HEIGHT - 64,
-    paddingTop: screen.height - ITEM_PREVIEW_HEIGHT - 100,
-    // paddingTop: !ANDROID ? 0 : screen.height - ITEM_PREVIEW_HEIGHT - 64,
+    // top: height - ITEM_PREVIEW_HEIGHT - 64,
+    paddingTop: height - ITEM_PREVIEW_HEIGHT - 100,
+    // paddingTop: !ANDROID ? 0 : height - ITEM_PREVIEW_HEIGHT - 64,
   },
   map: {
     backgroundColor: 'transparent',
@@ -506,7 +540,7 @@ const styles = StyleSheet.create({
   },
   item: {
     width: ITEM_WIDTH,
-    height: screen.height + (2 * ITEM_PREVIEW_HEIGHT),
+    height: height + (2 * ITEM_PREVIEW_HEIGHT),
     marginHorizontal: ITEM_SPACING / 2,
     overflow: 'hidden',
     borderRadius: 3,

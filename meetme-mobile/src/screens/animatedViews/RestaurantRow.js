@@ -3,9 +3,11 @@ import {
   StyleSheet,
   View,
   Image,
-  Text
+  Text,
+  Button
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
+import styles from './styles/RestaurantRow';
 
 const propTypes = {
   image: PropTypes.string.isRequired,
@@ -18,7 +20,7 @@ export default class RestaurantRow extends React.Component {
   render() {
     const { image, name, address, rating } = this.props;
     return (
-      <View style={styles.container} >
+      <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image 
             style={styles.image}
@@ -36,6 +38,10 @@ export default class RestaurantRow extends React.Component {
             starColor={'black'}
             starSize={20}
           />
+          <Button
+            onPress={() => {}}
+            title='Select'>
+          </Button>
         </View>
       </View>
     );
@@ -43,33 +49,3 @@ export default class RestaurantRow extends React.Component {
 }
 
 RestaurantRow.propTypes = propTypes;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    flexDirection: 'row'
-  },
-  imageContainer: {
-    height: 150,
-    width: 150,
-    padding: 20
-  },
-  image: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: 'gray'
-  },
-  infoContainer: {
-    flex: 3,
-    padding: 10
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginVertical: 4
-  },
-  address: {
-    fontSize: 10
-  }
-});
