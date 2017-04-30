@@ -7,7 +7,7 @@ const styles = EStyleSheet.create({
   },
   container: {
     flex: 1,
-    height: 50,
+    height: 55,
     backgroundColor: Colors.whiteColor,
     borderBottomWidth: 0.5,
     borderColor: 'gainsboro',

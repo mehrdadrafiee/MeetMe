@@ -1,9 +1,10 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Colors from '../../../../constants/Colors';
 
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: Colors.whiteColor,
     flexDirection: 'row'
   },
   imageContainer: {
@@ -20,8 +21,8 @@ const styles = EStyleSheet.create({
     flex: 3,
     padding: 10
   },
-  title: {
-    fontSize: 16,
+  name: {
+    fontSize: 13,
     fontWeight: 'bold',
     marginVertical: 4
   },

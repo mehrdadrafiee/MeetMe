@@ -457,11 +457,7 @@ class AnimatedViews extends React.Component {
             loadingEnabled={true}
             showsTraffic={true}
             onRegionChangeComplete={this.onRegionChangeComplete}
-            legalLabelInsets={{top: 10,
-              left: 10,
-              bottom: 10,
-              right: 10
-            }}
+            legalLabelInsets={{top: 10, right: 10, bottom: 10, left: 10 }}
           >
             {markers.map((marker, i) => {
               const {

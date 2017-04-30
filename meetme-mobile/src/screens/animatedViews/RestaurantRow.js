@@ -29,7 +29,7 @@ export default class RestaurantRow extends React.Component {
           />
         </View>
         <View style={styles.infoContainer}>
-          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.name}>{name}</Text>
           <Text style={styles.address}>{address}</Text>
           <StarRating
             disabled={false}
