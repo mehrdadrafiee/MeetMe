@@ -21,6 +21,8 @@ import Colors from '../../../constants/Colors';
 
 import { GooglePlacesAPI } from '../../config';
 
+import PriceMarker from './AnimatedPriceMarker';
+
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
@@ -386,6 +388,7 @@ class AnimatedViews extends React.Component {
             name: r.name,
             icon: r.icon,
             rating: r.rating,
+            price: r.priceLevel,
             image: this.getUrlImage(r),
             vicinity: r.vicinity,
             coordinate: {
@@ -467,13 +470,31 @@ class AnimatedViews extends React.Component {
               } = animations[i];
 
               return (
-                <Components.MapView.Marker
+                <MapView.Marker
                   key={marker.id}
                   coordinate={marker.coordinate}
-                  //image={marker.image}
-                  selected={selected}
-                />
+                >
+                  <PriceMarker
+                    style={{
+                      opacity: markerOpacity,
+                      transform: [
+                        { scale: markerScale },
+                      ],
+                    }}
+                    amount={marker.price}
+                    selected={selected}
+                  />
+                </MapView.Marker>
               );
+
+              // return (
+              //   <Components.MapView.Marker
+              //     key={marker.id}
+              //     coordinate={marker.coordinate}
+              //     //image={marker.image}
+              //     selected={selected}
+              //   />
+              // );
             })}
           </MapView.Animated>
           <View style={styles.itemContainer}>
