@@ -86,10 +86,7 @@ class ContactsScreen extends Component {
               <MaterialIcons name="call" style={styles.emailIcon}/> Call: {rowData.email}
             </Text>
             <Text style={styles.location}>
-              <MaterialIcons name="home" style={styles.locationIcon}/> Home: {rowData.address}
-            </Text>
-            <Text style={styles.location}>
-              <MaterialIcons name="work" style={styles.locationIcon}/> Work: {rowData.address}
+              <MaterialIcons name="location-on" style={styles.locationIcon}/> Location: {rowData.address}
             </Text>
           </View>
         </View>
