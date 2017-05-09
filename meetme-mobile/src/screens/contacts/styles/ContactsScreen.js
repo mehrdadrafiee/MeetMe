@@ -7,7 +7,7 @@ const styles = EStyleSheet.create({
   },
   container: {
     flex: 1,
-    height: 55,
+    height: 110,
     backgroundColor: Colors.whiteColor,
     borderBottomWidth: 0.5,
     borderColor: 'gainsboro',
@@ -19,34 +19,45 @@ const styles = EStyleSheet.create({
     padding: 10
   },
   image: {
-    flex: 1
+    flex: 1,
   },
   infoContainer: {
-    flex: 1,
-    marginHorizontal: 30
+    flex: 3,
+    marginLeft: 50
   },
-  title: {
+  name: {
     marginTop: 10,
-    fontSize: 10
+    fontSize: 18
   },
   address: {
     fontSize: 10
   },
   call: {
-    fontSize: 8,
+    fontSize: 12,
     color: 'gray'
   },
-  emailIcon: {
-    fontSize: 8,
+  textIcon: {
+    fontSize: 12,
     color: 'gray'
+  },
+  phoneNumber: {
+    color: 'dodgerblue'
   },
   location: {
-    fontSize: 8,
+    fontSize: 12,
     color: 'gray'
   },
   locationIcon: {
-    fontSize: 8,
+    fontSize: 12,
     color: 'gray'
+  },
+  selected: {
+    flex: 1,
+    marginTop: 30
+  },
+  selectContactIcon: {
+    fontSize: 30,
+    color: 'mediumseagreen'
   }
 });
 

@@ -12,7 +12,7 @@ export default TabNavigator({
   Contacts: {
     screen: ContactsScreen
   },
-  Home: {
+  Map: {
     screen: AnimatedViews
   },
   Notifications: {
@@ -24,7 +24,8 @@ export default TabNavigator({
   AnimatedViews: {
     screen: HomeScreen
   }
-}, {
+},
+{
   swipeEnabled: false,
   animationEnabled: true,
   tabBarPosition: 'bottom',

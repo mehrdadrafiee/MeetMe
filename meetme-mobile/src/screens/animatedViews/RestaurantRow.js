@@ -12,8 +12,8 @@ import styles from './styles/RestaurantRow';
 const propTypes = {
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
-  rating: PropTypes.number.isRequired
+  // address: PropTypes.string.isRequired,
+  // rating: PropTypes.number.isRequired
 };
 
 export default class RestaurantRow extends React.Component {
@@ -22,7 +22,7 @@ export default class RestaurantRow extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image 
+          <Image
             style={styles.image}
             source={{uri: image}}
             resizeMode="contain"
@@ -34,7 +34,7 @@ export default class RestaurantRow extends React.Component {
           <StarRating
             disabled={false}
             maxStars={5}
-            rating={rating}
+            rating={rating ? rating : 0}
             starColor={'black'}
             starSize={15}
           />

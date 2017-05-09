@@ -2629,6 +2629,10 @@ react-native-card-view@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/react-native-card-view/-/react-native-card-view-0.0.3.tgz#8db9ac4a3f01d08f8bd9f79343082d87fdf09907"
 
+react-native-communications@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
+
 react-native-contacts@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-0.8.1.tgz#ff1e90ab7da432763d2c5a62bd22e2157caffc70"

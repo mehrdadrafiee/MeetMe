@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 
 const propTypes = {
-  amount: PropTypes.number.isRequired,
   fontSize: PropTypes.number,
 };
 

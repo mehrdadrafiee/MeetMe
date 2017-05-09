@@ -5,8 +5,11 @@ import {
   Dimensions,
   Animated,
   TouchableOpacity,
-  Navigator
+  Navigator,
+  Text,
 } from 'react-native';
+
+import { connect } from 'react-redux';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
@@ -23,11 +26,13 @@ import { GooglePlacesAPI } from '../../config';
 
 import PriceMarker from './AnimatedPriceMarker';
 
+import { getLatLongByAddress, getNearbyResturant } from '../helpers';
+
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
+const LATITUDE = 36.7783;
+const LONGITUDE = 119.4179;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -161,7 +166,7 @@ class AnimatedViews extends React.Component {
     },
     tabBar: {
       icon: ({ tintColor }) => (
-        <MaterialIcons 
+        <MaterialIcons
           name="map"
           size={25}
           color={tintColor}
@@ -172,7 +177,6 @@ class AnimatedViews extends React.Component {
 
   constructor(props) {
     super(props);
-
     const panX = new Animated.Value(0);
     const panY = new Animated.Value(0);
 
@@ -220,8 +224,63 @@ class AnimatedViews extends React.Component {
       coordinate: {
         latitude: LATITUDE,
         longitude: LONGITUDE
-      }
+      },
+      locations: []
     };
+    this.getLatLng = this.getLatLng.bind(this);
+    this.onRegionChange = this.onRegionChange.bind(this);
+  }
+
+  onRegionChange(region) {
+    this.state.region.setValue(region);
+  }
+
+  getLatLng(locations){
+    let promises = [];
+    let markes = [];
+    let latlng = [];
+    // adding both user locations and selected contact locations
+    for(let i = 0; i < locations.length; i++){
+      promises.push(getLatLongByAddress(locations[i]));
+    }
+    Promise.all(promises)
+      .then((results) =>{
+        // send request for nearby restaurant for current user
+        latlng.push(getNearbyResturant(this.state.locations[0]));
+        const markers = results.map((result) =>{
+          if (result.results && result.results[0] && result.results[0].geometry) {
+            let latitude = result.results[0].geometry.location.lat;
+            let longitude = result.results[0].geometry.location.lng;
+            let regions = {
+              latitude,
+              longitude
+            }
+            // Passing the lat long to search nearby restaurant;
+            latlng.push(getNearbyResturant(regions));
+          }
+          return result;
+        });
+        Promise.all(latlng)
+          .then((response) =>{
+            response.map((responseData) =>{
+              responseData.results.forEach((r, index) => {
+                markes.push({id: index,
+                  name: r.name,
+                  icon: r.icon,
+                  rating: r.rating,
+                  price: r.priceLevel,
+                  image: this.getUrlImage(r),
+                  address: r.address,
+                  coordinate: {
+                    latitude: r.geometry.location.lat,
+                    longitude: r.geometry.location.lng,
+                  }
+                })
+              });
+            })
+            this.generateMarkers(markes);
+          })
+      })
   }
 
   componentDidMount() {
@@ -231,12 +290,13 @@ class AnimatedViews extends React.Component {
     panY.addListener(this.onPanYChange);
 
     navigator.geolocation.getCurrentPosition((position) => {
-      if (position && position.coords){
-        this.onRegionChangeComplete(position.coords);
+      if (position && position.coords) {
+        // this.onRegionChangeComplete(position.coords);
+        this.setState({locations: [position.coords]});
 
       }
     }, (error) => {
-      
+
       Alert.alert(
         'Error',
         "Please Activate your location !",
@@ -247,7 +307,13 @@ class AnimatedViews extends React.Component {
     }
     );
   }
-  
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.locations.length > 0){
+      this.getLatLng(nextProps.locations);
+    }
+  }
+
   onStartShouldSetPanResponder = (e) => {
     // we only want to move the view if they are starting the gesture on top
     // of the view, so this calculates that and returns true if so. If we return
@@ -323,10 +389,6 @@ class AnimatedViews extends React.Component {
     }
   }
 
-  onRegionChange(/* region */) {
-    // this.state.region.setValue(region);
-  }
-
   onRegionChangeComplete = (region) => {
     const {initialRegion} = this.state;
     this.setState({initialRegion: region});
@@ -341,8 +403,7 @@ class AnimatedViews extends React.Component {
   generateMarkers(markers) {
     const { panX, panY, scrollY } = this.state;
     const animations = markers.map((m, i) =>
-      getMarkerState(panX, panY, scrollY, i));
-    console.log('markers.length', markers.length)
+    getMarkerState(panX, panY, scrollY, i));
     this.setState({ animations, markers });
     this.startAnimate();
   }
@@ -364,14 +425,13 @@ class AnimatedViews extends React.Component {
       }).start();
     }
   }
-
+  //Currently we are not using this function since we need to have pure function to get response only
   async findRestaurant(region) {
 
     const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
     `location=${region.latitude},${region.longitude}` +
     // `location=${LATITUDE},${LONGITUDE}` +
     "&radius=500&type=restaurant&key=" + GooglePlacesAPI
-    console.log(url);
 
     let markes = [];
 
@@ -380,9 +440,7 @@ class AnimatedViews extends React.Component {
       return response.json();
     })
     .then((responseData) => {
-      console.log('responseDataresponseData', responseData)
       if(responseData && responseData.results) {
-        console.log('responseDataresponseData', responseData.results.length)
         responseData.results.forEach((r, index) => {
           markes.push({id: index,
             name: r.name,
@@ -407,13 +465,11 @@ class AnimatedViews extends React.Component {
 
   getUrlImage(item) {
     let url = item.icon;
-    if(item.photos[0]) {
+    if(item.photo && item.photos[0]) {
       url =  "https://maps.googleapis.com/maps/api/place/photo?"+
       "maxwidth=400&photoreference="+ item.photos[0].photo_reference +
       "&key="+ GooglePlacesAPI;
     }
-    
-    console.log(url);
     return url;
   }
 
@@ -448,14 +504,12 @@ class AnimatedViews extends React.Component {
             provider={this.props.provider}
             style={styles.map}
             region={region}
-            initialRegion={initialRegion}
             onRegionChange={this.onRegionChange}
             showsUserLocation={true}
             followsUserLocation={true}
             showsMyLocationButton={true}
             showsCompass={true}
             showsBuildings={true}
-            zoomEnabled={true}
             rotateEnabled={true}
             loadingEnabled={true}
             showsTraffic={true}
@@ -468,7 +522,6 @@ class AnimatedViews extends React.Component {
                 markerOpacity,
                 markerScale
               } = animations[i];
-
               return (
                 <MapView.Marker
                   key={marker.id}
@@ -487,14 +540,14 @@ class AnimatedViews extends React.Component {
                 </MapView.Marker>
               );
 
-              // return (
-              //   <Components.MapView.Marker
-              //     key={marker.id}
-              //     coordinate={marker.coordinate}
-              //     //image={marker.image}
-              //     selected={selected}
-              //   />
-              // );
+              return (
+                <Components.MapView.Marker
+                  key={marker.id}
+                  coordinate={marker.coordinate}
+                  //image={marker.image}
+                  selected={selected}
+                />
+              );
             })}
           </MapView.Animated>
           <View style={styles.itemContainer}>
@@ -522,7 +575,7 @@ class AnimatedViews extends React.Component {
                     rating={marker.rating}
                     name={marker.name}
                     image={marker.image}
-                    address={marker.vicinity}
+                    address={marker.address}
                   />
                 </Animated.View>
               );
@@ -534,9 +587,9 @@ class AnimatedViews extends React.Component {
   }
 }
 
-AnimatedViews.propTypes = {
-  provider: MapView.ProviderPropType
-};
+// AnimatedViews.propTypes = {
+//   provider: MapView.ProviderPropType
+// };
 
 const styles = StyleSheet.create({
   container: {
@@ -567,5 +620,10 @@ const styles = StyleSheet.create({
     marginLeft: 10
   }
 });
+function mapStateToProps(state){
+  return {
+    locations: state.location
+  }
+}
 
-module.exports = AnimatedViews;
+export default connect(mapStateToProps, null)(AnimatedViews);

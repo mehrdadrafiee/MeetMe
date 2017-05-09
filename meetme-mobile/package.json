@@ -16,6 +16,7 @@
     "react": "~15.4.0",
     "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
     "react-native-card-view": "^0.0.3",
+    "react-native-communications": "^2.2.1",
     "react-native-contacts": "^0.8.1",
     "react-native-debugger-open": "^0.3.2",
     "react-native-elements": "^0.10.2",

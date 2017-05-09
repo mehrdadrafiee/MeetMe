@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
 import {
-  HomeReducer
+  HomeReducer,
+  ContactReducer
 } from '../screens';
 
 export default combineReducers({
-  home: HomeReducer
+  home: HomeReducer,
+  location: ContactReducer
 });
