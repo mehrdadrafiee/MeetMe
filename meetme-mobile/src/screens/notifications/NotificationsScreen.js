@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, Button, Image } from 'react-native';
+// import { DropDown } from 'react-native-dropdown';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
 import styles from './styles/NotificationsScreen';
@@ -10,6 +11,15 @@ import {
   CardContent,
   CardAction
 } from 'react-native-card-view';
+
+
+// const DropDown = require('react-native-dropdown');
+// const {
+//   Select,
+//   Option,
+//   OptionList,
+//   updatePosition
+// } = DropDown;
 
 class NotificationsScreen extends Component {
   static navigationOptions = {
@@ -31,28 +41,78 @@ class NotificationsScreen extends Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      canada: ''
+    };
+  }
+
+  componentDidMount() {
+    // updatePosition(this.refs['SELECT1']);
+    // updatePosition(this.refs['OPTIONLIST']);
+  }
+
+  _getOptionList() {
+    return this.refs['OPTIONLIST'];
+  }
+
+  
+  _canada(province) {
+
+	this.setState({
+      ...this.state,
+      canada: province
+    });
+  }
+
+  // constructor(props) {
+  //   super(props);
+
+  //   this.state = PropertiesStore.getState();
+  //   this.onChange = this.onChange.bind(this)
+  // }
+
+  // componentDidMount() {
+  //   PropertiesStore.listen(this.onChange);
+
+  //   PropertiesActions.getList();
+  // }
+
+  // componentWillUnmount() {
+  //   PropertiesStore.unlisten(this.onChange);
+  // }
+
+  // onChange(state) {
+  //   this.setState(state);
+  // }
+
+  // state = {
+  //   selected1: 'key1',
+  //   selected2: 'key1',
+  //   selected3: 'key1',
+  //   color: 'red',
+  //   mode: Picker.MODE_DIALOG,
+  // };
+
   render() {
     return (
       <ScrollView>
         <View style={styles.container}>
-        <Text>Basic</Text>
           <Card>
-            <CardTitle>
-              <Text style={styles.title}>Card Title</Text>
-            </CardTitle>
             <CardContent>
-              <Text>Content</Text>
+              <Text>You are invited for a hangout with
+                <Text style={{fontWeight: 'bold'}}> 
+                  Sarah Smith
+                </Text>. Vote for the place that you like the most or swipe left to discard.
+              </Text>
             </CardContent>
             <CardAction >
               <Button
                 style={styles.button}
                 onPress={() => {}}
-                title='button 1'>
-              </Button>
-              <Button
-                style={styles.button}
-                onPress={() => {}}
-                title='button 2'>
+                title='Send'>
               </Button>
             </CardAction>
           </Card>

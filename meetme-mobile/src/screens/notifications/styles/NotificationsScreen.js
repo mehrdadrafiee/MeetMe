@@ -8,12 +8,15 @@ const styles = EStyleSheet.create({
   // }
   container: {
     flex: 1,
-    marginTop: 60,
     marginBottom: 60
   },
   title: {
     fontSize: 38,
     backgroundColor: 'transparent'
+  },
+  picker: {
+    width: 50,
+    height: 50
   },
   button: {
     marginRight: 10
