@@ -271,7 +271,7 @@ class AnimatedViews extends React.Component {
                   rating: r.rating,
                   price: r.priceLevel,
                   image: this.getUrlImage(r),
-                  address: r.address,
+                  address: r.vicinity,
                   actualAddress: responseData.address,
                   coordinate: {
                     latitude: r.geometry.location.lat,
@@ -486,7 +486,7 @@ class AnimatedViews extends React.Component {
       region,
       initialRegion
     } = this.state;
-
+    console.log('markers....', this.state.markers);
     return (
       <View style={styles.container}>
         <PanController
