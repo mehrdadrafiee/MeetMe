@@ -247,23 +247,23 @@ class AnimatedViews extends React.Component {
       .then((results) =>{
         // send request for nearby restaurant for current user
         latlng.push(getNearbyResturant(this.state.locations[0]));
-        const markers = results.map((result) =>{
-          if (result.results && result.results[0] && result.results[0].geometry) {
-            let latitude = result.results[0].geometry.location.lat;
-            let longitude = result.results[0].geometry.location.lng;
+        results.map((result) =>{
+          if (result.data.results && result.data.results[0] && result.data.results[0].geometry) {
+            let latitude = result.data.results[0].geometry.location.lat;
+            let longitude = result.data.results[0].geometry.location.lng;
             let regions = {
               latitude,
               longitude
             }
             // Passing the lat long to search nearby restaurant;
-            latlng.push(getNearbyResturant(regions));
+            latlng.push(getNearbyResturant(regions, result.address));
           }
           return result;
         });
         Promise.all(latlng)
           .then((response) =>{
             response.map((responseData) =>{
-              responseData.results.forEach((r, index) => {
+              responseData.data.results.forEach((r, index) => {
                 markes.push({id: index,
                   name: r.name,
                   icon: r.icon,
@@ -271,6 +271,7 @@ class AnimatedViews extends React.Component {
                   price: r.priceLevel,
                   image: this.getUrlImage(r),
                   address: r.address,
+                  actualAddress: responseData.address,
                   coordinate: {
                     latitude: r.geometry.location.lat,
                     longitude: r.geometry.location.lng,
@@ -309,8 +310,8 @@ class AnimatedViews extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if (nextProps.locations.length > 0){
-      this.getLatLng(nextProps.locations);
+    if (nextProps.Location.length > 0){
+      this.getLatLng(nextProps.Location);
     }
   }
 
@@ -510,6 +511,7 @@ class AnimatedViews extends React.Component {
             showsMyLocationButton={true}
             showsCompass={true}
             showsBuildings={true}
+            zoomEnabled={true}
             rotateEnabled={true}
             loadingEnabled={true}
             showsTraffic={true}
@@ -576,6 +578,8 @@ class AnimatedViews extends React.Component {
                     name={marker.name}
                     image={marker.image}
                     address={marker.address}
+                    id={marker.id}
+                    coordinate={marker.coordinate}
                   />
                 </Animated.View>
               );
@@ -622,7 +626,7 @@ const styles = StyleSheet.create({
 });
 function mapStateToProps(state){
   return {
-    locations: state.location
+    Location: state.Location.toJS()
   }
 }
 

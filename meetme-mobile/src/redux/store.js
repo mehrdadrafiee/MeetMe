@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 
 import reducers from './reducers';
+console.log(reducers, 'reducers');
 
 const middlewares = [
   promiseMiddleware()

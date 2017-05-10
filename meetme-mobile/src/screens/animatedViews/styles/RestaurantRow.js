@@ -5,7 +5,8 @@ const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.whiteColor,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    height:200
   },
   imageContainer: {
     height: 150,
@@ -35,6 +36,10 @@ const styles = EStyleSheet.create({
     flex: 4,
     padding: 0,
     margin: 0
+  },
+  selectContactIcon: {
+    fontSize: 30,
+    color: 'mediumseagreen'
   }
 });
 
