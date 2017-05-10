@@ -11,7 +11,7 @@ import {
 const GetMultipleReducers  = (reducer) => {
   const reducers = {};
   Object.keys(reducer)
-    .map((key, index) =>{
+    .map((key, index) => {
       reducers[key] = reducer[key];
     })
   return reducers;
