@@ -486,7 +486,7 @@ class AnimatedViews extends React.Component {
       region,
       initialRegion
     } = this.state;
-    console.log('markers....', this.state.markers);
+    
     return (
       <View style={styles.container}>
         <PanController

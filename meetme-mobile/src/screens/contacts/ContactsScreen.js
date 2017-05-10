@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { View, Text, ListView, Button, Image, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { bindActionCreators } from 'redux';
+import { Permissions, Notifications } from 'expo';
 import { connect } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
@@ -11,6 +12,8 @@ import Communications from 'react-native-communications';
 import { Contacts } from 'expo';
 import { ListAddress } from './List';
 import * as actionCreators from './actions';
+
+import { registerForPushNotification, getStorage, setStorage, sendPushNotification } from '../helpers';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -64,15 +67,23 @@ class ContactsScreen extends Component {
 
   componentDidMount() {
     this.getAllContacts();
+    registerForPushNotification()
+      .then((response) => {
+        sendPushNotification(response.token)
+          .then((res) => {
+          })
+        // setStorage('push_token', JSON.stringify(response))
+      })
   }
 
   selectContact(contact) {
     let contactDetails;
-    const selected = [...this.state.selected];
+    const selected = this.state.selected.splice();
     const index = selected.indexOf(contact.id);
     // Check to see wheather this contact id has already beeen selected or not
     index !== -1 ? selected.splice(index, 1) : selected.push(contact.id);
     this.setState({selected})
+
     // Check to see this address has already been selected or not. This is important for map view.
     if (contact.addresses) {
       contact.addresses.map((address, index) => {
@@ -115,7 +126,7 @@ class ContactsScreen extends Component {
   }
   _renderRow(rowData){
     return(
-        <View style={styles.container}>
+        <View style={styles.container} key={rowData.id}>
           <View style={styles.imageContainer}>
             <Image
             style={{width: 50, height: 50, borderRadius: 25}}
@@ -139,7 +150,7 @@ class ContactsScreen extends Component {
               </View>
             </TouchableOpacity>
           </View>
-          {this.state.selected.indexOf(rowData.id) !== -1 &&
+          {this.state.selected.indexOf(rowData.id) != -1 &&
             <View style={styles.selected}>
               <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
             </View>
