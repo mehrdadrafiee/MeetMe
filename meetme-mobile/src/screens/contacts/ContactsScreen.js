@@ -66,7 +66,7 @@ class ContactsScreen extends Component {
     this.getAllContacts();
   }
 
-  selectContact(contact){
+  selectContact(contact) {
     let contactDetails;
     const selected = [...this.state.selected];
     const index = selected.indexOf(contact.id);
@@ -74,19 +74,19 @@ class ContactsScreen extends Component {
     index !== -1 ? selected.splice(index, 1) : selected.push(contact.id);
     this.setState({selected})
     // Check to see this address has already been selected or not. This is important for map view.
-    if (contact.addresses){
+    if (contact.addresses) {
       contact.addresses.map((address, index) => {
-        if (address.label === 'work'){
+        if (address.label === 'work') {
           contactDetails = `${contact.addresses[index].street}, ${contact.addresses[index].region}, ${contact.addresses[index].city}, ${contact.addresses[index].postcode}`;
           const locations = [...this.state.locations];
           const locationIndex = locations.indexOf(contactDetails);
           locationIndex !== -1 ? locations.splice(locationIndex, 1) : locations.push(contactDetails);
           this.setState({locations});
           // this.props.navigation.setParams({locations})
-          if (locationIndex === -1){
+          if (locationIndex === -1) {
             this.props.actions.updateLocation(contactDetails)
             this.props.actions.addContact(contact);
-          }else{
+          } else {
             this.props.actions.removeLocation(contactDetails);
             this.props.actions.removeContact(contact.id);
           }
@@ -153,7 +153,7 @@ function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators(actionCreators, dispatch) }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     Location: state.Location.toJS(),
     Contact: state.Contact.toJS()

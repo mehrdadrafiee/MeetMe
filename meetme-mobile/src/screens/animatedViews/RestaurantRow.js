@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import StarRating from 'react-native-star-rating';
 import styles from './styles/RestaurantRow';
 import * as actionCreators from '../contacts/actions';
@@ -22,18 +22,18 @@ const propTypes = {
 };
 
 class RestaurantRow extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       selected: false
     }
     this.addAddress = this.addAddress.bind(this);
   }
-  addAddress(address){
-    const isThere = this.props.Address.filter((data) =>{
+  addAddress(address) {
+    const isThere = this.props.Address.filter((data) => {
       return data.id === address.id;
     });
-    if (isThere.length > 0){
+    if (isThere.length > 0) {
       this.props.actions.removeAddress(address.id);
       this.setState({selected: false})
     } else {
@@ -69,9 +69,8 @@ class RestaurantRow extends React.Component {
         </View>
         {this.state.selected &&
           <View>
-          <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
+             <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
           </View>
-
         }
       </View>
     );
@@ -79,7 +78,7 @@ class RestaurantRow extends React.Component {
 }
 RestaurantRow.propTypes = propTypes;
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     Address: state.Address.toJS()
   }

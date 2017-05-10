@@ -18,7 +18,7 @@ export function Location(state = INITIAL_STATE, action) {
   }
 };
 
-export function Contact(state = INITIAL_CONTACT, action){
+export function Contact(state = INITIAL_CONTACT, action) {
   switch (action.type) {
     case ADD_CONTACT:
       return state.push(action.payload);
@@ -31,7 +31,7 @@ export function Contact(state = INITIAL_CONTACT, action){
   }
 }
 
-export function Address(state = INITIAL_ADDRESS, action){
+export function Address(state = INITIAL_ADDRESS, action) {
   switch (action.type) {
     case ADD_ADDRESS:
       return state.push(action.payload);

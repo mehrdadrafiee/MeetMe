@@ -235,7 +235,7 @@ class AnimatedViews extends React.Component {
     this.state.region.setValue(region);
   }
 
-  getLatLng(locations){
+  getLatLng(locations) {
     let promises = [];
     let markes = [];
     let latlng = [];
@@ -244,27 +244,28 @@ class AnimatedViews extends React.Component {
       promises.push(getLatLongByAddress(locations[i]));
     }
     Promise.all(promises)
-      .then((results) =>{
+      .then((results) => {
         // send request for nearby restaurant for current user
         latlng.push(getNearbyResturant(this.state.locations[0]));
-        results.map((result) =>{
+        results.map((result) => {
           if (result.data.results && result.data.results[0] && result.data.results[0].geometry) {
             let latitude = result.data.results[0].geometry.location.lat;
             let longitude = result.data.results[0].geometry.location.lng;
             let regions = {
               latitude,
               longitude
-            }
+            };
             // Passing the lat long to search nearby restaurant;
             latlng.push(getNearbyResturant(regions, result.address));
           }
           return result;
         });
         Promise.all(latlng)
-          .then((response) =>{
-            response.map((responseData) =>{
+          .then((response) => {
+            response.map((responseData) => {
               responseData.data.results.forEach((r, index) => {
-                markes.push({id: index,
+                markes.push({
+                  id: index,
                   name: r.name,
                   icon: r.icon,
                   rating: r.rating,
@@ -309,8 +310,8 @@ class AnimatedViews extends React.Component {
     );
   }
 
-  componentWillReceiveProps(nextProps){
-    if (nextProps.Location.length > 0){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.Location.length > 0) {
       this.getLatLng(nextProps.Location);
     }
   }
@@ -624,7 +625,7 @@ const styles = StyleSheet.create({
     marginLeft: 10
   }
 });
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     Location: state.Location.toJS()
   }
