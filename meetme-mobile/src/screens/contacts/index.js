@@ -1,5 +1,5 @@
 import ContactsScreen from './ContactsScreen';
-import ContactReducer from './reducers';
+import * as ContactReducer from './reducers';
 
 export {
   ContactsScreen,

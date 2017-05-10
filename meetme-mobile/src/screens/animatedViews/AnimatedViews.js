@@ -235,7 +235,7 @@ class AnimatedViews extends React.Component {
     this.state.region.setValue(region);
   }
 
-  getLatLng(locations){
+  getLatLng(locations) {
     let promises = [];
     let markes = [];
     let latlng = [];
@@ -244,33 +244,35 @@ class AnimatedViews extends React.Component {
       promises.push(getLatLongByAddress(locations[i]));
     }
     Promise.all(promises)
-      .then((results) =>{
+      .then((results) => {
         // send request for nearby restaurant for current user
         latlng.push(getNearbyResturant(this.state.locations[0]));
-        const markers = results.map((result) =>{
-          if (result.results && result.results[0] && result.results[0].geometry) {
-            let latitude = result.results[0].geometry.location.lat;
-            let longitude = result.results[0].geometry.location.lng;
+        results.map((result) => {
+          if (result.data.results && result.data.results[0] && result.data.results[0].geometry) {
+            let latitude = result.data.results[0].geometry.location.lat;
+            let longitude = result.data.results[0].geometry.location.lng;
             let regions = {
               latitude,
               longitude
-            }
+            };
             // Passing the lat long to search nearby restaurant;
-            latlng.push(getNearbyResturant(regions));
+            latlng.push(getNearbyResturant(regions, result.address));
           }
           return result;
         });
         Promise.all(latlng)
-          .then((response) =>{
-            response.map((responseData) =>{
-              responseData.results.forEach((r, index) => {
-                markes.push({id: index,
+          .then((response) => {
+            response.map((responseData) => {
+              responseData.data.results.forEach((r, index) => {
+                markes.push({
+                  id: index,
                   name: r.name,
                   icon: r.icon,
                   rating: r.rating,
                   price: r.priceLevel,
                   image: this.getUrlImage(r),
                   address: r.address,
+                  actualAddress: responseData.address,
                   coordinate: {
                     latitude: r.geometry.location.lat,
                     longitude: r.geometry.location.lng,
@@ -308,9 +310,9 @@ class AnimatedViews extends React.Component {
     );
   }
 
-  componentWillReceiveProps(nextProps){
-    if (nextProps.locations.length > 0){
-      this.getLatLng(nextProps.locations);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.Location.length > 0) {
+      this.getLatLng(nextProps.Location);
     }
   }
 
@@ -510,6 +512,7 @@ class AnimatedViews extends React.Component {
             showsMyLocationButton={true}
             showsCompass={true}
             showsBuildings={true}
+            zoomEnabled={true}
             rotateEnabled={true}
             loadingEnabled={true}
             showsTraffic={true}
@@ -576,6 +579,8 @@ class AnimatedViews extends React.Component {
                     name={marker.name}
                     image={marker.image}
                     address={marker.address}
+                    id={marker.id}
+                    coordinate={marker.coordinate}
                   />
                 </Animated.View>
               );
@@ -620,9 +625,9 @@ const styles = StyleSheet.create({
     marginLeft: 10
   }
 });
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
-    locations: state.location
+    Location: state.Location.toJS()
   }
 }
 

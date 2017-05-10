@@ -6,8 +6,13 @@ import {
   Text,
   Button
 } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import StarRating from 'react-native-star-rating';
 import styles from './styles/RestaurantRow';
+import * as actionCreators from '../contacts/actions';
+
 
 const propTypes = {
   image: PropTypes.string.isRequired,
@@ -16,7 +21,26 @@ const propTypes = {
   // rating: PropTypes.number.isRequired
 };
 
-export default class RestaurantRow extends React.Component {
+class RestaurantRow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: false
+    }
+    this.addAddress = this.addAddress.bind(this);
+  }
+  addAddress(address) {
+    const isThere = this.props.Address.filter((data) => {
+      return data.id === address.id;
+    });
+    if (isThere.length > 0) {
+      this.props.actions.removeAddress(address.id);
+      this.setState({selected: false})
+    } else {
+      this.props.actions.addAddress(address);
+      this.setState({selected: true})
+    }
+  }
   render() {
     const { image, name, address, rating } = this.props;
     return (
@@ -39,13 +63,28 @@ export default class RestaurantRow extends React.Component {
             starSize={15}
           />
           <Button
-            onPress={() => {}}
-            title='Select'>
+            onPress={() => this.addAddress(this.props)}
+            title={!this.state.selected ? 'select': 'unselect'}>
           </Button>
         </View>
+        {this.state.selected &&
+          <View>
+             <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
+          </View>
+        }
       </View>
     );
   }
 }
-
 RestaurantRow.propTypes = propTypes;
+
+function mapStateToProps(state) {
+  return {
+    Address: state.Address.toJS()
+  }
+}
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators(actionCreators, dispatch) }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RestaurantRow);

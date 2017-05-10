@@ -66,24 +66,30 @@ class ContactsScreen extends Component {
     this.getAllContacts();
   }
 
-  selectContact({id, addresses}){
+  selectContact(contact) {
     let contactDetails;
     const selected = [...this.state.selected];
-    const index = selected.indexOf(id);
+    const index = selected.indexOf(contact.id);
     // Check to see wheather this contact id has already beeen selected or not
-    index !== -1 ? selected.splice(index, 1) : selected.push(id);
+    index !== -1 ? selected.splice(index, 1) : selected.push(contact.id);
     this.setState({selected})
     // Check to see this address has already been selected or not. This is important for map view.
-    if (addresses){
-      addresses.map((address, index) => {
-        if (address.label === 'work'){
-          contactDetails = `${addresses[index].street}, ${addresses[index].region}, ${addresses[index].city}, ${addresses[index].postcode}`;
+    if (contact.addresses) {
+      contact.addresses.map((address, index) => {
+        if (address.label === 'work') {
+          contactDetails = `${contact.addresses[index].street}, ${contact.addresses[index].region}, ${contact.addresses[index].city}, ${contact.addresses[index].postcode}`;
           const locations = [...this.state.locations];
           const locationIndex = locations.indexOf(contactDetails);
           locationIndex !== -1 ? locations.splice(locationIndex, 1) : locations.push(contactDetails);
           this.setState({locations});
           // this.props.navigation.setParams({locations})
-          this.props.actions.updateLocation(locations)
+          if (locationIndex === -1) {
+            this.props.actions.updateLocation(contactDetails)
+            this.props.actions.addContact(contact);
+          } else {
+            this.props.actions.removeLocation(contactDetails);
+            this.props.actions.removeContact(contact.id);
+          }
         }
       });
     }
@@ -133,7 +139,7 @@ class ContactsScreen extends Component {
               </View>
             </TouchableOpacity>
           </View>
-          {this.state.selected.indexOf(rowData.id) != -1 &&
+          {this.state.selected.indexOf(rowData.id) !== -1 &&
             <View style={styles.selected}>
               <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
             </View>
@@ -147,4 +153,11 @@ function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators(actionCreators, dispatch) }
 }
 
-export default connect(null, mapDispatchToProps)(ContactsScreen);
+function mapStateToProps(state) {
+  return {
+    Location: state.Location.toJS(),
+    Contact: state.Contact.toJS()
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactsScreen);
