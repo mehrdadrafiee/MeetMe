@@ -25,7 +25,6 @@ export const send = async (req, res) => {
   let isPushToken = Expo.isExponentPushToken(token);
   // Create a new Expo SDK client
   let expo = new Expo();
-  console.log(req.body.token);
 
   try {
     let receipts = await expo.sendPushNotificationsAsync([{
@@ -34,12 +33,10 @@ export const send = async (req, res) => {
       sound: 'default',
       badge: 1,
       body: 'This is a test notification',
-      data: {withSome: 'data'},
+      data: req.body
     }]);
-    console.log(receipts);
     return res.json(receipts);
   } catch (error) {
-    console.log(error);
     return res.status(500).json(error);
   }
 }

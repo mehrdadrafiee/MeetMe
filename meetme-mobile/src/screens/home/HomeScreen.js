@@ -71,7 +71,6 @@ class HomeScreen extends Component {
     const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log("Here is the postion: " + position.coords);
       this.setState({currentRegion: {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,

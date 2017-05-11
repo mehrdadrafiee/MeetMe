@@ -26,7 +26,7 @@ import { GooglePlacesAPI } from '../../config';
 
 import PriceMarker from './AnimatedPriceMarker';
 
-import { getLatLongByAddress, getNearbyResturant } from '../helpers';
+import { getLatLongByAddress, getNearbyResturant, sendPushNotification } from '../helpers';
 
 const { width, height } = Dimensions.get('window');
 
@@ -142,10 +142,10 @@ function getMarkerState(panX, panY, scrollY, i) {
 class AnimatedViews extends React.Component {
   static navigationOptions = {
     title: 'NEARBY PLACES',
-    header: ({ navigate }) => {
+    header: ({ state }) => {
       const style = { backgroundColor: Colors.whiteColor };
       const left = (
-        <TouchableOpacity style={styles.iconAdd} onPress={() => navigate('CreateMeetup')}>
+        <TouchableOpacity style={styles.iconAdd} >
           <MaterialIcons
             name="add-circle"
             size={30}
@@ -153,7 +153,7 @@ class AnimatedViews extends React.Component {
         </TouchableOpacity>
       );
       const right = (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => state.params.sendPush()}>
           <MaterialIcons
             name="navigate-next"
             size={30}
@@ -229,11 +229,26 @@ class AnimatedViews extends React.Component {
     };
     this.getLatLng = this.getLatLng.bind(this);
     this.onRegionChange = this.onRegionChange.bind(this);
+    this.sendPush = this.sendPush.bind(this);
   }
 
   onRegionChange(region) {
     this.state.region.setValue(region);
   }
+
+   sendPush() {
+     console.log(this.props.Address);
+     console.log(this.props.Contact);
+     if (this.props.Address.length > 0 && this.props.Contact.length > 0) {
+       sendPushNotification({
+         Address: this.props.Address,
+         Contact: this.props.Contact
+       })
+       .then((result) => {
+         console.log(result, '.......result');
+       })
+     }
+   }
 
   getLatLng(locations) {
     let promises = [];
@@ -308,6 +323,8 @@ class AnimatedViews extends React.Component {
       );
     }
     );
+    this.props.navigation.setParams({ sendPush: this.sendPush });
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -475,7 +492,6 @@ class AnimatedViews extends React.Component {
     return url;
   }
 
-
   render() {
     const {
       panX,
@@ -486,7 +502,7 @@ class AnimatedViews extends React.Component {
       region,
       initialRegion
     } = this.state;
-    
+
     return (
       <View style={styles.container}>
         <PanController
@@ -627,7 +643,9 @@ const styles = StyleSheet.create({
 });
 function mapStateToProps(state) {
   return {
-    Location: state.Location.toJS()
+    Address: state.Address.toJS(),
+    Location: state.Location.toJS(),
+    Contact: state.Contact.toJS()
   }
 }
 

@@ -21,7 +21,6 @@
     "react-native-contacts": "^0.8.1",
     "react-native-debugger-open": "^0.3.2",
     "react-native-device-info": "^0.10.2",
-    "react-native-dropdown": "^0.0.6",
     "react-native-elements": "^0.10.2",
     "react-native-extended-stylesheet": "^0.3.2",
     "react-native-fcm": "^6.2.3",

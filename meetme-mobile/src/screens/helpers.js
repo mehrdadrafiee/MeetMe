@@ -33,7 +33,7 @@ export async  function getLatLongByAddress(address) {
   return { data, address };
 }
 
-export async function HTTP(endpoint, verb, data){
+export async function HTTP(endpoint, verb, data) {
   let params = {
     method: verb,
     headers: {
@@ -41,7 +41,7 @@ export async function HTTP(endpoint, verb, data){
       'Content-Type': 'application/json',
     },
   }
-  if (verb === 'POST'){
+  if (verb === 'POST') {
     params.body = JSON.stringify(data);
   }
   const response = await fetch(endpoint, params);
@@ -64,9 +64,13 @@ export async function registerForPushNotification() {
   return response;
 }
 
-export async function sendPushNotification(token) {
-  let endpoint = getEndPoints('push/send');
-  const response = await HTTP(endpoint, 'POST', { token });
+export async function sendPushNotification(data) {
+  let url = getEndPoints('push/send');
+  let t = await getStorage('push_token');
+  let token = JSON.parse(t).token;
+  let params = Object.assign(data, { token });
+  console.log('params.....', params);
+  const response = await HTTP(url, 'POST', params);
   return response;
 }
 

@@ -4,7 +4,7 @@ const PushSchema = new Schema({
   token: {
     type : String,
     required : true
-  },
+  }
 });
 
 

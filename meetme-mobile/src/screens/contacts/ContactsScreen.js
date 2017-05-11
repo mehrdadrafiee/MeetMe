@@ -67,21 +67,20 @@ class ContactsScreen extends Component {
   }
 
   componentDidMount() {
-    console.log('did mount');
     this.getAllContacts();
     registerForPushNotification()
       .then((response) => {
-        sendPushNotification(response.token)
-          .then((res) => {
-          })
-        // setStorage('push_token', JSON.stringify(response))
-      })
+        // console.log('getting token', response);
+        // sendPushNotification(response.token)
+        //   .then((res) => {
+        //   })
+        setStorage('push_token', JSON.stringify(response))
+      });
   }
 
   selectContact(contact) {
-    console.log(contact);
     let contactDetails;
-    const selected = this.state.selected.splice();
+    const selected = [...this.state.selected];
     const index = selected.indexOf(contact.id);
     // Check to see wheather this contact id has already beeen selected or not
     index !== -1 ? selected.splice(index, 1) : selected.push(contact.id);
@@ -123,6 +122,7 @@ class ContactsScreen extends Component {
   }
 
   render() {
+    console.log('selected...', this.state.selected);
     return (
       <ListView contentContainerStyle={styles.listView} dataSource={this.state.dataSource} renderRow={this._renderRow} enableEmptySections={true}/>
     );
@@ -153,7 +153,7 @@ class ContactsScreen extends Component {
               </View>
             </TouchableOpacity>
           </View>
-          {this.state.selected.indexOf(rowData.id) != -1 &&
+          {this.state.selected.indexOf(rowData.id) !== -1 &&
             <View style={styles.selected}>
               <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
             </View>
