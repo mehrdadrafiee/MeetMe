@@ -13,7 +13,7 @@ import { Contacts } from 'expo';
 import { ListAddress } from './List';
 import * as actionCreators from './actions';
 
-import { registerForPushNotification, getStorage, setStorage, sendPushNotification } from '../helpers';
+import { registerForPushNotification, getStorage, setStorage, sendPushNotification, registerDevice } from '../helpers';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -59,13 +59,15 @@ class ContactsScreen extends Component {
     this.state = {
       dataSource: ds.cloneWithRows([]),
       selected: [],
-      locations: []
+      locations: [],
+      notification: {}
     };
     this.selectContact = this.selectContact.bind(this);
     this._renderRow = this._renderRow.bind(this);
   }
 
   componentDidMount() {
+    console.log('did mount');
     this.getAllContacts();
     registerForPushNotification()
       .then((response) => {
@@ -77,6 +79,7 @@ class ContactsScreen extends Component {
   }
 
   selectContact(contact) {
+    console.log(contact);
     let contactDetails;
     const selected = this.state.selected.splice();
     const index = selected.indexOf(contact.id);

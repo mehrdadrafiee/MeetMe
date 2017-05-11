@@ -47,7 +47,7 @@ class HomeScreen extends Component {
     },
     tabBar: {
       icon: ({ tintColor }) => (
-        <MaterialIcons 
+        <MaterialIcons
           name="map"
           size={25}
           color={tintColor}

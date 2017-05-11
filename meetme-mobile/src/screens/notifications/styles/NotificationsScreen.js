@@ -23,7 +23,7 @@ const styles = EStyleSheet.create({
   },
   card: {
     width: 300
-  }
+  },
 });
 
 export default styles;

@@ -4,6 +4,8 @@ import { ScrollView, View, Text, Button, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
 import styles from './styles/NotificationsScreen';
+import { Permissions, Notifications } from 'expo';
+
 import {
   Card,
   CardImage,
@@ -11,6 +13,8 @@ import {
   CardContent,
   CardAction
 } from 'react-native-card-view';
+
+
 
 
 // const DropDown = require('react-native-dropdown');
@@ -29,14 +33,14 @@ class NotificationsScreen extends Component {
         backgroundColor: Colors.whiteColor
       }
     },
-    
+
     tabBar: {
       icon: ({ tintColor }) => (
-        <MaterialIcons 
+        <MaterialIcons
           name="notifications"
           size={25}
           color={tintColor}
-        />
+        ><Text style={styles.notificationNumber}>12</Text></MaterialIcons>
       )
     }
   }
@@ -45,20 +49,29 @@ class NotificationsScreen extends Component {
     super(props);
 
     this.state = {
-      canada: ''
+      canada: '',
+      notifications: []
     };
+    this._handleNotification = this._handleNotification.bind(this);
   }
+
+  _handleNotification = (notifications) => {
+    const newnotifications = this.state.notifications.slice();
+    newnotifications.push(notifications);
+    this.setState({notifications: newnotifications});
+  };
 
   componentDidMount() {
     // updatePosition(this.refs['SELECT1']);
     // updatePosition(this.refs['OPTIONLIST']);
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
 
   _getOptionList() {
     return this.refs['OPTIONLIST'];
   }
 
-  
+
   _canada(province) {
 
 	this.setState({
@@ -103,7 +116,7 @@ class NotificationsScreen extends Component {
           <Card>
             <CardContent>
               <Text>You are invited for a hangout with
-                <Text style={{fontWeight: 'bold'}}> 
+                <Text style={{fontWeight: 'bold'}}>
                   Sarah Smith
                 </Text>. Vote for the place that you like the most or swipe left to discard.
               </Text>

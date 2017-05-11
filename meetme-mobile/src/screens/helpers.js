@@ -69,3 +69,7 @@ export async function sendPushNotification(token) {
   const response = await HTTP(endpoint, 'POST', { token });
   return response;
 }
+
+export async function registerDevice(){
+
+}
