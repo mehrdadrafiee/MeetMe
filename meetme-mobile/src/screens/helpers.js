@@ -1,6 +1,9 @@
 import { Permissions, Notifications } from 'expo';
 import { GooglePlacesAPI } from '../config';
-import  { AsyncStorage } from 'react-native';
+import  {
+  AsyncStorage,
+  AlertIOS
+} from 'react-native';
 
 const api = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCfua3xcDexrf74snFHczxbd3S6RtpPHbU`
 const nearbysearchUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?radius=500&type=restaurant&key=${GooglePlacesAPI}`
@@ -73,6 +76,10 @@ export async function sendPushNotification(data) {
   return response;
 }
 
-export async function registerDevice(){
-
+export function alertService(title, message) {
+  const data = Object.assign(message, data);
+  AlertIOS.prompt(
+    title,
+    message
+  );
 }

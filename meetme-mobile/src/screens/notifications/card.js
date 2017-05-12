@@ -62,10 +62,10 @@ export default class CardView extends Component {
             width={250}
             ref="SELECT1"
             optionListRef={this._getOptionList.bind(this)}
-            defaultValue="Select a Province in Canada ..."
+            defaultValue="Select resturant"
             onSelect={this.navigate.bind(this)}>
             {this.state.Address.map( (s, i) => {
-              return <Option value = {s}>{s.name}</Option>
+              return <Option value = {s} key={i}>{s.name}</Option>
             })}
           </Select>
           <OptionList ref="OPTIONLIST"/>

@@ -6,7 +6,7 @@ import {
   Animated,
   TouchableOpacity,
   Navigator,
-  Text,
+  Text
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -26,7 +26,7 @@ import { GooglePlacesAPI } from '../../config';
 
 import PriceMarker from './AnimatedPriceMarker';
 
-import { getLatLongByAddress, getNearbyResturant, sendPushNotification } from '../helpers';
+import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService } from '../helpers';
 
 const { width, height } = Dimensions.get('window');
 
@@ -215,6 +215,7 @@ class AnimatedViews extends React.Component {
       scale,
       translateY,
       markers,
+      hasSent: false,
       region: new MapView.AnimatedRegion({
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -237,10 +238,21 @@ class AnimatedViews extends React.Component {
   }
 
    sendPush() {
-     if (this.props.Address.length > 0 && this.props.Contact.length > 0) {
+     if (this.props.Address.length > 0 && this.props.Contact.length > 0 && this.state.hasSent === false) {
+       this.setState({
+         hasSent: true
+       })
        sendPushNotification({
          Address: this.props.Address,
          Contact: this.props.Contact
+       }).then((response) => {
+         console.log(response, '....response');
+         alertService('Info', 'Successfully sent request to join.')
+       })
+       .catch(() => {
+         this.setState({
+           hasSent: false
+         })
        })
      }
    }
