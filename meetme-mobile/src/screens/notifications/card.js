@@ -35,7 +35,7 @@ export default class CardView extends Component {
   }
 
   navigate(value) {
-    Linking.openURL(`http://maps.apple.com/?ll=${value.latitude},${value.longitude}`)
+    Linking.openURL(`http://maps.apple.com/?ll=${value.coordinate.latitude},${value.coordinate.longitude}&address=value.name`);
   }
 
   _getOptionList() {
@@ -46,7 +46,7 @@ export default class CardView extends Component {
     const Address = [...this.props.data.Address];
     if (Address.length > 0) {
       this.setState({Address: [...Address]});
-      this.setState({selectedService: Address[0].name})
+      this.setState({selectedService: Address[0].name});
     }
   }
 
@@ -65,7 +65,7 @@ export default class CardView extends Component {
             defaultValue="Select a Province in Canada ..."
             onSelect={this.navigate.bind(this)}>
             {this.state.Address.map( (s, i) => {
-              return <Option value = {s.coordinate}>{s.name}</Option>
+              return <Option value = {s}>{s.name}</Option>
             })}
           </Select>
           <OptionList ref="OPTIONLIST"/>
