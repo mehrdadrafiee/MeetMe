@@ -514,7 +514,7 @@ class AnimatedViews extends React.Component {
     return (
       <View style={styles.container}>
         {this.state.hasSent &&
-          <ActivityIndicator/>
+          <ActivityIndicator style={[styles.centering, {height: 80}]} size="large"/>
         }
         {!this.state.hasSent &&
           <PanController
@@ -652,6 +652,11 @@ const styles = StyleSheet.create({
   },
   iconAdd: {
     marginLeft: 10
+  },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
   }
 });
 function mapStateToProps(state) {
