@@ -70,10 +70,6 @@ class ContactsScreen extends Component {
     this.getAllContacts();
     registerForPushNotification()
       .then((response) => {
-        // console.log('getting token', response);
-        // sendPushNotification(response.token)
-        //   .then((res) => {
-        //   })
         setStorage('push_token', JSON.stringify(response))
       });
   }
@@ -122,7 +118,6 @@ class ContactsScreen extends Component {
   }
 
   render() {
-    console.log('selected...', this.state.selected);
     return (
       <ListView contentContainerStyle={styles.listView} dataSource={this.state.dataSource} renderRow={this._renderRow} enableEmptySections={true}/>
     );

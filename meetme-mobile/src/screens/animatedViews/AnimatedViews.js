@@ -237,15 +237,10 @@ class AnimatedViews extends React.Component {
   }
 
    sendPush() {
-     console.log(this.props.Address);
-     console.log(this.props.Contact);
      if (this.props.Address.length > 0 && this.props.Contact.length > 0) {
        sendPushNotification({
          Address: this.props.Address,
          Contact: this.props.Contact
-       })
-       .then((result) => {
-         console.log(result, '.......result');
        })
      }
    }

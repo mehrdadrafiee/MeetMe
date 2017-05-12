@@ -69,7 +69,6 @@ export async function sendPushNotification(data) {
   let t = await getStorage('push_token');
   let token = JSON.parse(t).token;
   let params = Object.assign(data, { token });
-  console.log('params.....', params);
   const response = await HTTP(url, 'POST', params);
   return response;
 }
