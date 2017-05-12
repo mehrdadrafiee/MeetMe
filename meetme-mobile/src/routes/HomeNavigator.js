@@ -1,4 +1,5 @@
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, TabView } from 'react-navigation';
+import React from 'react';
 import Colors from '../../constants/Colors';
 import {
   ContactsScreen,
@@ -7,6 +8,7 @@ import {
   ChatScreen,
   AnimatedViews
 } from '../screens';
+
 
 export default TabNavigator({
   Contacts: {

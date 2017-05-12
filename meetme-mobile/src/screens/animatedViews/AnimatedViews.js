@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Navigator,
   Text,
+  ActivityIndicator
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -26,7 +27,7 @@ import { GooglePlacesAPI } from '../../config';
 
 import PriceMarker from './AnimatedPriceMarker';
 
-import { getLatLongByAddress, getNearbyResturant } from '../helpers';
+import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService } from '../helpers';
 
 const { width, height } = Dimensions.get('window');
 
@@ -142,10 +143,10 @@ function getMarkerState(panX, panY, scrollY, i) {
 class AnimatedViews extends React.Component {
   static navigationOptions = {
     title: 'NEARBY PLACES',
-    header: ({ navigate }) => {
+    header: ({ state }) => {
       const style = { backgroundColor: Colors.whiteColor };
       const left = (
-        <TouchableOpacity style={styles.iconAdd} onPress={() => navigate('CreateMeetup')}>
+        <TouchableOpacity style={styles.iconAdd} >
           <MaterialIcons
             name="add-circle"
             size={30}
@@ -153,7 +154,7 @@ class AnimatedViews extends React.Component {
         </TouchableOpacity>
       );
       const right = (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => state.params.sendPush()}>
           <MaterialIcons
             name="navigate-next"
             size={30}
@@ -215,6 +216,7 @@ class AnimatedViews extends React.Component {
       scale,
       translateY,
       markers,
+      hasSent: false,
       region: new MapView.AnimatedRegion({
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -229,11 +231,32 @@ class AnimatedViews extends React.Component {
     };
     this.getLatLng = this.getLatLng.bind(this);
     this.onRegionChange = this.onRegionChange.bind(this);
+    this.sendPush = this.sendPush.bind(this);
   }
 
   onRegionChange(region) {
     this.state.region.setValue(region);
   }
+
+   sendPush() {
+     if (this.props.Address.length > 0 && this.props.Contact.length > 0 && this.state.hasSent === false) {
+       this.setState({
+         hasSent: true
+       })
+       sendPushNotification({
+         Address: this.props.Address,
+         Contact: this.props.Contact
+       }).then((response) => {
+         console.log(response, '....response');
+         alertService('Info', 'Successfully sent request to join.')
+       })
+       .catch(() => {
+         this.setState({
+           hasSent: false
+         })
+       })
+     }
+   }
 
   getLatLng(locations) {
     let promises = [];
@@ -271,7 +294,7 @@ class AnimatedViews extends React.Component {
                   rating: r.rating,
                   price: r.priceLevel,
                   image: this.getUrlImage(r),
-                  address: r.address,
+                  address: r.vicinity,
                   actualAddress: responseData.address,
                   coordinate: {
                     latitude: r.geometry.location.lat,
@@ -308,6 +331,8 @@ class AnimatedViews extends React.Component {
       );
     }
     );
+    this.props.navigation.setParams({ sendPush: this.sendPush });
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -475,7 +500,6 @@ class AnimatedViews extends React.Component {
     return url;
   }
 
-
   render() {
     const {
       panX,
@@ -489,7 +513,11 @@ class AnimatedViews extends React.Component {
 
     return (
       <View style={styles.container}>
-        <PanController
+        {this.state.hasSent &&
+          <ActivityIndicator style={[styles.centering, {height: 80}]} size="large"/>
+        }
+        {!this.state.hasSent &&
+          <PanController
           style={styles.container}
           vertical
           horizontal={canMoveHorizontal}
@@ -501,92 +529,93 @@ class AnimatedViews extends React.Component {
           panX={panX}
           onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
           onMoveShouldSetPanResponder={this.onMoveShouldSetPanResponder}
-        >
-          <MapView.Animated
-            provider={this.props.provider}
-            style={styles.map}
-            region={region}
-            onRegionChange={this.onRegionChange}
-            showsUserLocation={true}
-            followsUserLocation={true}
-            showsMyLocationButton={true}
-            showsCompass={true}
-            showsBuildings={true}
-            zoomEnabled={true}
-            rotateEnabled={true}
-            loadingEnabled={true}
-            showsTraffic={true}
-            onRegionChangeComplete={this.onRegionChangeComplete}
-            legalLabelInsets={{top: 10, right: 10, bottom: 10, left: 10 }}
           >
-            {markers.map((marker, i) => {
-              const {
-                selected,
-                markerOpacity,
-                markerScale
-              } = animations[i];
-              return (
-                <MapView.Marker
-                  key={marker.id}
-                  coordinate={marker.coordinate}
-                >
-                  <PriceMarker
-                    style={{
-                      opacity: markerOpacity,
-                      transform: [
-                        { scale: markerScale },
-                      ],
-                    }}
-                    amount={marker.price}
-                    selected={selected}
-                  />
-                </MapView.Marker>
-              );
+          <MapView.Animated
+          provider={this.props.provider}
+          style={styles.map}
+          region={region}
+          onRegionChange={this.onRegionChange}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          showsMyLocationButton={true}
+          showsCompass={true}
+          showsBuildings={true}
+          zoomEnabled={true}
+          rotateEnabled={true}
+          loadingEnabled={true}
+          showsTraffic={true}
+          onRegionChangeComplete={this.onRegionChangeComplete}
+          legalLabelInsets={{top: 10, right: 10, bottom: 10, left: 10 }}
+          >
+          {markers.map((marker, i) => {
+            const {
+              selected,
+              markerOpacity,
+              markerScale
+            } = animations[i];
+            return (
+              <MapView.Marker
+              key={marker.id}
+              coordinate={marker.coordinate}
+              >
+              <PriceMarker
+              style={{
+                opacity: markerOpacity,
+                transform: [
+                  { scale: markerScale },
+                ],
+              }}
+              amount={marker.price}
+              selected={selected}
+              />
+              </MapView.Marker>
+            );
 
-              return (
-                <Components.MapView.Marker
-                  key={marker.id}
-                  coordinate={marker.coordinate}
-                  //image={marker.image}
-                  selected={selected}
-                />
-              );
-            })}
+            return (
+              <Components.MapView.Marker
+              key={marker.id}
+              coordinate={marker.coordinate}
+              //image={marker.image}
+              selected={selected}
+              />
+            );
+          })}
           </MapView.Animated>
           <View style={styles.itemContainer}>
-            {markers.map((marker, i) => {
-              const {
-                translateY,
-                translateX,
-                scale,
-                opacity
-              } = animations[i];
+          {markers.map((marker, i) => {
+            const {
+              translateY,
+              translateX,
+              scale,
+              opacity
+            } = animations[i];
 
-              return (
-                <Animated.View
-                  key={marker.id}
-                  style={[styles.item, {
-                    opacity,
-                    transform: [
-                      { translateY },
-                      { translateX },
-                      { scale }
-                    ]
-                  }]}
-                >
-                  <RestaurantRow
-                    rating={marker.rating}
-                    name={marker.name}
-                    image={marker.image}
-                    address={marker.address}
-                    id={marker.id}
-                    coordinate={marker.coordinate}
-                  />
-                </Animated.View>
-              );
-            })}
+            return (
+              <Animated.View
+              key={marker.id}
+              style={[styles.item, {
+                opacity,
+                transform: [
+                  { translateY },
+                  { translateX },
+                  { scale }
+                ]
+              }]}
+              >
+              <RestaurantRow
+              rating={marker.rating}
+              name={marker.name}
+              image={marker.image}
+              address={marker.address}
+              id={marker.id}
+              coordinate={marker.coordinate}
+              />
+              </Animated.View>
+            );
+          })}
           </View>
-        </PanController>
+          </PanController>
+        }
       </View>
     );
   }
@@ -623,11 +652,18 @@ const styles = StyleSheet.create({
   },
   iconAdd: {
     marginLeft: 10
+  },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
   }
 });
 function mapStateToProps(state) {
   return {
-    Location: state.Location.toJS()
+    Address: state.Address.toJS(),
+    Location: state.Location.toJS(),
+    Contact: state.Contact.toJS()
   }
 }
 

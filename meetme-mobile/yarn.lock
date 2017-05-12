@@ -2645,6 +2645,10 @@ react-native-debugger-open@^0.3.2:
     es6-template "^1.0.4"
     minimist "^1.2.0"
 
+react-native-device-info@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.10.2.tgz#350cd68ed43839022ddea0a3a423439f16fa4fba"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -2690,6 +2694,10 @@ react-native-extended-stylesheet@^0.3.2:
   dependencies:
     css-mediaquery "^0.1.2"
     object-resolve-path "^1.1.0"
+
+react-native-fcm@^6.2.3:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-fcm/-/react-native-fcm-6.2.3.tgz#676a6b91ac363e29eb7fd3e7c44b7df0177e6fb7"
 
 react-native-keyboard-aware-scroll-view@0.2.7:
   version "0.2.7"

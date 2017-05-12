@@ -4,22 +4,8 @@ import { ScrollView, View, Text, Button, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
 import styles from './styles/NotificationsScreen';
-import {
-  Card,
-  CardImage,
-  CardTitle,
-  CardContent,
-  CardAction
-} from 'react-native-card-view';
-
-
-// const DropDown = require('react-native-dropdown');
-// const {
-//   Select,
-//   Option,
-//   OptionList,
-//   updatePosition
-// } = DropDown;
+import { Permissions, Notifications } from 'expo';
+import CardView from './card';
 
 class NotificationsScreen extends Component {
   static navigationOptions = {
@@ -29,15 +15,17 @@ class NotificationsScreen extends Component {
         backgroundColor: Colors.whiteColor
       }
     },
-    
-    tabBar: {
-      icon: ({ tintColor }) => (
-        <MaterialIcons 
-          name="notifications"
-          size={25}
-          color={tintColor}
-        />
-      )
+
+    tabBar: (data) => {
+      const color = data.state.params ? 'red': '#cccccc';
+      return {
+        icon: ({tintColor}) =>
+          <MaterialIcons
+              name="notifications"
+              size={25}
+              color={color}
+            />
+      }
     }
   }
 
@@ -45,20 +33,30 @@ class NotificationsScreen extends Component {
     super(props);
 
     this.state = {
-      canada: ''
+      canada: '',
+      notifications: []
     };
+    this._handleNotification = this._handleNotification.bind(this);
   }
+
+  _handleNotification = (notifications) => {
+    const newnotifications = [...this.state.notifications]
+    newnotifications.push(notifications);
+    // changes color of icon when notification arrives
+    this.props.navigation.setParams({hasNotification: true})
+    this.setState({notifications: newnotifications});
+  };
 
   componentDidMount() {
     // updatePosition(this.refs['SELECT1']);
     // updatePosition(this.refs['OPTIONLIST']);
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
 
   _getOptionList() {
     return this.refs['OPTIONLIST'];
   }
 
-  
   _canada(province) {
 
 	this.setState({
@@ -100,10 +98,14 @@ class NotificationsScreen extends Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <Card>
+          {this.state.notifications.length === 0 &&
+            <Text>No Notification</Text>
+          }
+          {this.state.notifications.length > 0 && this.state.notifications.map((card, key) => <CardView {...card} key={key} />)}
+          {/*<Card>
             <CardContent>
               <Text>You are invited for a hangout with
-                <Text style={{fontWeight: 'bold'}}> 
+                <Text style={{fontWeight: 'bold'}}>
                   Sarah Smith
                 </Text>. Vote for the place that you like the most or swipe left to discard.
               </Text>
@@ -115,8 +117,8 @@ class NotificationsScreen extends Component {
                 title='Send'>
               </Button>
             </CardAction>
-          </Card>
-
+          </Card>*/}
+{/*
           <Text>Fix width : 300</Text>
           <Card styles={{card: {width: 300}}}>
             <CardTitle>
@@ -137,9 +139,9 @@ class NotificationsScreen extends Component {
                 title='button 2'>
               </Button>
             </CardAction>
-          </Card>
+          </Card>*/}
 
-          <Text>Card Image + Card Title + Card Content + Card Action</Text>
+          {/*<Text>Card Image + Card Title + Card Content + Card Action</Text>
           <Card>
             <CardImage>
               <Image
@@ -193,7 +195,7 @@ class NotificationsScreen extends Component {
                 source={{uri: 'https://static.pexels.com/photos/59523/pexels-photo-59523.jpeg'}}
               />
             </CardImage>
-          </Card>
+          </Card>*/}
         </View>
       </ScrollView>
     );
