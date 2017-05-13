@@ -56,9 +56,9 @@ class HomeScreen extends Component {
     }
   }
 
-  // state = {
-  //   currentRegion: 'unknown'
-  // }
+  state = {
+    currentRegion: 'unknown'
+  }
 
   watchID: ?number = null;
 

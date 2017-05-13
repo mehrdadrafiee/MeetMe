@@ -5,6 +5,7 @@ import { View, Text, ListView, Button, Image, TouchableOpacity, TouchableHighlig
 import { bindActionCreators } from 'redux';
 import { Permissions, Notifications } from 'expo';
 import { connect } from 'react-redux';
+import * as firebase from 'firebase';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
 import styles from './styles/ContactsScreen';
@@ -13,7 +14,7 @@ import { Contacts } from 'expo';
 import { ListAddress } from './List';
 import * as actionCreators from './actions';
 
-import { registerForPushNotification, getStorage, setStorage, sendPushNotification, registerDevice } from '../helpers';
+import { registerForPushNotification, getStorage, setStorage, sendPushNotification, registerDevice, saveTokenToDatabase, sort_by } from '../helpers';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -22,13 +23,6 @@ class ContactsScreen extends Component {
     title: 'CONTACTS',
     header: (navigation) => {
       const { navigate, state } = navigation;
-      // Navigate to map if the user has selected any on the contact in the lists.
-      // const GoToMap = () =>{
-      //   if (state.params && state.params.locations && state.params.locations.length > 0){
-      //     navigate('Map', {locations: state.params.locations});
-      //   }
-      // }
-
       const style = { backgroundColor: Colors.whiteColor };
       const right = (
         <TouchableOpacity onPress={() => navigate('Map') }>
@@ -69,8 +63,7 @@ class ContactsScreen extends Component {
   componentDidMount() {
     this.getAllContacts();
     registerForPushNotification()
-      .then((response) => {
-        setStorage('push_token', JSON.stringify(response))
+      .then((result) => {
       });
   }
 
@@ -110,11 +103,11 @@ class ContactsScreen extends Component {
       Contacts.EMAILS,
       Contacts.ADDRESSES
     ]);
+    // const sortedContact = contacts.sort(sort_by('firstName', false, function(name){return name.toUpperCase()}));
     if (contacts.length > 0) {
       this.setState({dataSource: ds.cloneWithRows(contacts)});
     }
-
-    return contacts;
+    return sortedContact;
   }
 
   render() {

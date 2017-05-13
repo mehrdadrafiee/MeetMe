@@ -21,6 +21,7 @@ import DropDown, {
   OptionList,
 } from 'react-native-selectme';
 
+import Swipeout from 'react-native-swipeout';
 
 export default class CardView extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export default class CardView extends Component {
     }
     this.navigate = this.navigate.bind(this);
     this._getOptionList = this._getOptionList.bind(this);
+    this.deleteCard = this.deleteCard.bind(this);
   }
 
   navigate(value) {
@@ -50,7 +52,16 @@ export default class CardView extends Component {
     }
   }
 
+  deleteCard(rowData) {
+  }
+
   render() {
+    let swipeBtns = [{
+      text: 'Delete',
+      backgroundColor: 'red',
+      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+      onPress: () => { this.deleteCard(rowData) }
+    }];
     return (
       <Card>
         <CardContent>
@@ -69,10 +80,6 @@ export default class CardView extends Component {
             })}
           </Select>
           <OptionList ref="OPTIONLIST"/>
-          {/*<Picker
-              onValueChange={ (service) => this.navigate(service) } >
-              {locationItems}
-          </Picker>*/}
         </CardContent>
         <CardAction >
           <Button

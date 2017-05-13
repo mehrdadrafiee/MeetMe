@@ -25,7 +25,7 @@ export default TabNavigator({
   },
   AnimatedViews: {
     screen: HomeScreen
-  }
+  },
 },
 {
   swipeEnabled: false,

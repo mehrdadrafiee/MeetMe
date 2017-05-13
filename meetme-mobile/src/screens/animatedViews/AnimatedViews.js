@@ -12,6 +12,8 @@ import {
 
 import { connect } from 'react-redux';
 
+import * as firebase from 'firebase';
+
 import { MaterialIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 
@@ -216,6 +218,7 @@ class AnimatedViews extends React.Component {
       scale,
       translateY,
       markers,
+      userByToken: {},
       hasSent: false,
       region: new MapView.AnimatedRegion({
         latitude: LATITUDE,
@@ -240,17 +243,33 @@ class AnimatedViews extends React.Component {
 
    sendPush() {
      if (this.props.Address.length > 0 && this.props.Contact.length > 0 && this.state.hasSent === false) {
-       this.setState({
-         hasSent: true
-       })
+       this.setState({ hasSent: true });
+       const token = [];
+       this.props.Contact.map((contact) => {
+         if (contact.emails){
+           contact.emails.map((emaildata) => {
+             Object.keys(this.state.userByToken)
+             .map((val, key) =>{
+               if (this.state.userByToken[val].email == emaildata.email){
+                 token.push(this.state.userByToken[val].token);
+               }
+             })
+           });
+         }
+       });
        sendPushNotification({
          Address: this.props.Address,
-         Contact: this.props.Contact
+         Contact: this.props.Contact,
+         token
        }).then((response) => {
-         console.log(response, '....response');
-         alertService('Info', 'Successfully sent request to join.')
+         alertService('Successfully sent request to join.');
+         this.setState({
+           hasSent: false
+         });
        })
-       .catch(() => {
+       .catch((error) => {
+         alert(error);
+         alertService(`Contact hasn't been registered. Please invite to register.`)
          this.setState({
            hasSent: false
          })
@@ -331,8 +350,12 @@ class AnimatedViews extends React.Component {
       );
     }
     );
+    const userData = firebase.database().ref('users/');
+    userData.on('value', (snapshot) => {
+      const data = snapshot.val();
+      this.setState({userByToken: Object.assign({}, data)});
+    });
     this.props.navigation.setParams({ sendPush: this.sendPush });
-
   }
 
   componentWillReceiveProps(nextProps) {
