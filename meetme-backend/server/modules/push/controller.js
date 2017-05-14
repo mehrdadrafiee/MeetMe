@@ -36,12 +36,14 @@ export const registerDevice = async (req, res) => {
 }
 
 export const sendPushNotification = async (data) => {
+  console.log(data);
   const receipts = await expo.sendPushNotificationsAsync([{
-      to: data.token,
+      to: 'ExponentPushToken[mkfvWDE8xm4vC9kdy9LJYv]',
       sound: 'default',
       badge: 1,
-      body: 'This is a meetme notification',
+      body: data.body.type === 'Invitation' ? 'You have been invited for hangout in Yelpify' : 'Default message',
       data: data.body
   }]);
+  console.log('receipts', receipts);
   return receipts;
 }

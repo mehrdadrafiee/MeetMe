@@ -29,7 +29,7 @@ import { GooglePlacesAPI } from '../../config';
 
 import PriceMarker from './AnimatedPriceMarker';
 
-import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService } from '../helpers';
+import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService, saveNotiicationToDatabase } from '../helpers';
 
 const { width, height } = Dimensions.get('window');
 
@@ -257,10 +257,19 @@ class AnimatedViews extends React.Component {
            });
          }
        });
-       sendPushNotification({
+       const invitationData = {
          Address: this.props.Address,
          Contact: this.props.Contact,
-         token
+         token: token,
+         type: 'Invitation'
+       }
+       saveNotiicationToDatabase(invitationData)
+        .then((result) => {
+          console.log('here we are......');
+        })
+       sendPushNotification({
+         token,
+         type: 'Invitation'
        }).then((response) => {
          alertService('Successfully sent request to join.');
          this.setState({

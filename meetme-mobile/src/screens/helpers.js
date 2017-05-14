@@ -79,6 +79,7 @@ export async function registerForPushNotification() {
 
   // This token uniquely identifies this device
   let token = await Notifications.getExponentPushTokenAsync();
+  console.log('token...', token);
   // post  token to our backend so we can use it to send pushes (firebase)
   const response = await saveTokenToDatabase(token);
   return response;
@@ -136,4 +137,24 @@ export async function saveTokenToDatabase(token) {
     email
   });
   return response;
+}
+
+export async function saveNotiicationToDatabase(data) {
+  const userId = firebase.auth().currentUser.uid;
+  const email = firebase.auth().currentUser.email;
+  const response = await firebase.database().ref(`notifications/${userId}`).set(data);
+  return response;
+}
+
+export async function saveToDatabase(data) {
+  const userId = firebase.auth().currentUser.uid;
+  const email = firebase.auth().currentUser.email;
+  const instanceRef = firebase.database().ref(`notifications/${userId}`);
+  instanceRef.set(data)
+  return instanceRef;
+}
+
+export async function getLoggedInUser(data) {
+  const userId = firebase.auth().currentUser.uid;
+  return userId;
 }

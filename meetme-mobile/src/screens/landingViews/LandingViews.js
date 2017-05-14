@@ -75,7 +75,7 @@ class LandingViews extends Component {
             <TextInput
               style={styles.textInputStyle}
               autoCorrect={false}
-              autoCapitalize={false}
+              autoCapitalize="none"
               onChangeText={(email) => this.setState({email})}
               placeholder="Email"
               value={this.state.email}
@@ -83,7 +83,7 @@ class LandingViews extends Component {
             <TextInput
               style={styles.textInputStyle}
               autoCorrect={false}
-              autoCapitalize={false}
+              autoCapitalize="none"
               onChangeText={(password) => this.setState({password})}
               placeholder="Password"
               value={this.state.password}
@@ -92,7 +92,7 @@ class LandingViews extends Component {
         <View>
           <Button title="Submit"  style={styles.button} onPress={this.submit}/>
           <TouchableHighlight onPress={this.switchScreen}>
-            {this.state.screenName === 'Login' ? <Text>Go to singup</Text>: <Text>Go to login</Text> }
+            {this.state.screenName === 'Login' ? <Text>Go to signup</Text>: <Text>Go to login</Text> }
           </TouchableHighlight>
         </View>
         {this.state.process &&

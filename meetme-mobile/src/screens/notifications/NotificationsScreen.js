@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, Button, Image } from 'react-native';
+import * as firebase from 'firebase';
 // import { DropDown } from 'react-native-dropdown';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
 import styles from './styles/NotificationsScreen';
 import { Permissions, Notifications } from 'expo';
 import CardView from './card';
+
+import { getLoggedInUser } from '../helpers';
 
 class NotificationsScreen extends Component {
   static navigationOptions = {
@@ -40,17 +43,27 @@ class NotificationsScreen extends Component {
   }
 
   _handleNotification = (notifications) => {
-    const newnotifications = [...this.state.notifications]
-    newnotifications.push(notifications);
     // changes color of icon when notification arrives
     this.props.navigation.setParams({hasNotification: true})
-    this.setState({notifications: newnotifications});
   };
 
   componentDidMount() {
     // updatePosition(this.refs['SELECT1']);
     // updatePosition(this.refs['OPTIONLIST']);
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  }
+
+  componentDidMount() {
+    getLoggedInUser()
+      .then((userId) => {
+        console.log(userId);
+        const notificationSnap = firebase.database().ref(`notifications/${userId}`);
+        notificationSnap.on('value', (snapshot) => {
+          const notifications = snapshot.val();
+          console.log(notifications, 'notifications.....');
+          this.setState({notifications})
+        });
+      });
   }
 
   _getOptionList() {

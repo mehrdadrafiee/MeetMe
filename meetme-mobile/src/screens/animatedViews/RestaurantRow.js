@@ -33,11 +33,14 @@ class RestaurantRow extends React.Component {
     const isThere = this.props.Address.filter((data) => {
       return data.id === address.id;
     });
+    console.log('################################################', address);
     if (isThere.length > 0) {
       this.props.actions.removeAddress(address.id);
       this.setState({selected: false})
     } else {
-      this.props.actions.addAddress(address);
+      const newAddress = Object.assign({}, address);
+      delete newAddress.actions;
+      this.props.actions.addAddress(newAddress);
       this.setState({selected: true})
     }
   }

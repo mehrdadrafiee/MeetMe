@@ -10,6 +10,4 @@ export default StackNavigator({
   Login: { screen : LandingViews},
   Home: { screen: HomeNavigator },
   CreateMeetup: { screen: CreateMeetupScreen }
-}, {
-  mode: 'modal',
 });

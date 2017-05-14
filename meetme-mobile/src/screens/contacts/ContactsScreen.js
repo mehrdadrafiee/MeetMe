@@ -14,7 +14,7 @@ import { Contacts } from 'expo';
 import { ListAddress } from './List';
 import * as actionCreators from './actions';
 
-import { registerForPushNotification, getStorage, setStorage, sendPushNotification, registerDevice, saveTokenToDatabase, sort_by } from '../helpers';
+import { registerForPushNotification, getStorage, setStorage, sendPushNotification, registerDevice, saveTokenToDatabase, sort_by, saveToDatabase } from '../helpers';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -107,7 +107,7 @@ class ContactsScreen extends Component {
     if (contacts.length > 0) {
       this.setState({dataSource: ds.cloneWithRows(contacts)});
     }
-    return sortedContact;
+    return contacts;
   }
 
   render() {
