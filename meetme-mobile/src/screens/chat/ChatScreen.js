@@ -31,7 +31,7 @@ class ChatScreen extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <Text>Chat</Text>
+        <Text fontFamily="catamaran">Chat</Text>
       </View>
     );
   }

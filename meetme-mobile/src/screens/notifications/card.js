@@ -65,8 +65,8 @@ export default class CardView extends Component {
     return (
       <Card>
         <CardContent>
-          <Text>You are invited for a hangout with
-          {this.props.data.Contact.map(contact => <Text key={contact.id} style={{fontWeight: 'bold'}}> {contact.firstName}</Text>)}
+          <Text fontFamily="catamaran">You are invited for a hangout with
+          {this.props.data.Contact.map(contact => <Text key={contact.id} style={{fontWeight: 'bold'}} fontFamily="catamaran"> {contact.firstName}</Text>)}
           .Vote for the place that you like the most or swipe left to discard.
           </Text>
           <Select
@@ -83,9 +83,9 @@ export default class CardView extends Component {
         </CardContent>
         <CardAction >
           <Button
-          style={styles.button}
-          onPress={() => {}}
-          title='Send'>
+            style={styles.button}
+            onPress={() => {}}
+            title='Send'>
           </Button>
         </CardAction>
       </Card>

@@ -53,8 +53,8 @@ class RestaurantRow extends React.Component {
           />
         </View>
         <View style={styles.infoContainer}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.address}>{address}</Text>
+          <Text style={styles.name} fontFamily="catamaran">{name}</Text>
+          <Text style={styles.address} fontFamily="catamaran">{address}</Text>
           <StarRating
             disabled={false}
             maxStars={5}
@@ -64,12 +64,13 @@ class RestaurantRow extends React.Component {
           />
           <Button
             onPress={() => this.addAddress(this.props)}
-            title={!this.state.selected ? 'select': 'unselect'}>
+            title={!this.state.selected ? 'select': 'unselect'}
+            fontFamily="catamaran">
           </Button>
         </View>
         {this.state.selected &&
           <View>
-             <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
+            <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
           </View>
         }
       </View>

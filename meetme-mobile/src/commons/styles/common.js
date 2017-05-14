@@ -1,32 +1,39 @@
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Colors from '../../../constants/Colors';
+
 import {
   StyleSheet
 } from 'react-native';
 
 const styles = StyleSheet.create({
+  root: {
+    backgroundColor: Colors.whiteColor,
+    flex: 1,
+    alignItems: 'center',
+  },
   LoginScreenContainer: {
     flex: 1,
-    paddingTop: 140,
-    alignItems: 'center'
+    width: 300,
+    marginTop: 50,
+    alignItems: 'center',
   },
   logoText: {
     fontSize: 40
   },
+  item: {
+    marginVertical: 10,
+    width: 290,
+  },
   textInputStyle: {
-    height: 40,
-    borderColor: 'gray',
-    marginTop: 3,
-    borderWidth: 0.5,
-    width: 300,
-    backgroundColor: '#ffffff'
+    color: Colors.blackColor
+  },
+  button: {
+    position: 'absolute',
+    color: 'red'
   },
   screenName: {
     fontSize: 20,
     paddingTop: 10
-  },
-  button: {
-    width: 100,
-    height: 60,
-    backgroundColor: 'blue'
   },
   centering: {
     alignItems: 'center',
@@ -36,6 +43,9 @@ const styles = StyleSheet.create({
   gray: {
     backgroundColor: '#cccccc',
   },
+  pageInfo: {
+    marginTop: 10
+  }
 });
 
 export default styles;

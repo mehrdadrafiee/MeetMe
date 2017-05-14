@@ -117,36 +117,36 @@ class ContactsScreen extends Component {
   }
   _renderRow(rowData){
     return(
-        <View style={styles.container} key={rowData.id}>
-          <View style={styles.imageContainer}>
-            <Image
+      <View style={styles.container} key={rowData.id}>
+        <View style={styles.imageContainer}>
+          <Image
             style={{width: 50, height: 50, borderRadius: 25}}
             source={{uri: 'https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-contact-128.png'}}
-            />
-          </View>
-          <View style={styles.infoContainer}>
-            <TouchableOpacity onPress={() => this.selectContact(rowData)}>
-              <View>
-                <Text style={styles.name}>{rowData.name}</Text>
-                <TouchableOpacity onPress={() => Communications.text(rowData.phoneNumbers ? rowData.phoneNumbers[0].number: '')}>
-                  <Text style={styles.call}>
-                    <MaterialIcons name="textsms" style={styles.textIcon}/> Text:
-                    <Text style={styles.phoneNumber}>
-                      {rowData.phoneNumbers ? rowData.phoneNumbers[0].number: ''}
-                    </Text>
-                  </Text>
-                </TouchableOpacity>
-                <ListAddress data={rowData.addresses} type={'home'}/>
-                <ListAddress data={rowData.addresses} type={'work'}/>
-              </View>
-            </TouchableOpacity>
-          </View>
-          {this.state.selected.indexOf(rowData.id) !== -1 &&
-            <View style={styles.selected}>
-              <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
-            </View>
-          }
+          />
         </View>
+        <View style={styles.infoContainer}>
+          <TouchableOpacity onPress={() => this.selectContact(rowData)}>
+            <View>
+              <Text style={styles.name} fontFamily="catamaran">{rowData.name}</Text>
+              <TouchableOpacity onPress={() => Communications.text(rowData.phoneNumbers ? rowData.phoneNumbers[0].number: '')}>
+                <Text style={styles.call} fontFamily="catamaran">
+                  <MaterialIcons name="textsms" style={styles.textIcon}/> Text:
+                  <Text style={styles.phoneNumber} fontFamily="catamaran">
+                    {rowData.phoneNumbers ? rowData.phoneNumbers[0].number: ''}
+                  </Text>
+                </Text>
+              </TouchableOpacity>
+              <ListAddress data={rowData.addresses} type={'home'}/>
+              <ListAddress data={rowData.addresses} type={'work'}/>
+            </View>
+          </TouchableOpacity>
+        </View>
+        {this.state.selected.indexOf(rowData.id) !== -1 &&
+          <View style={styles.selected}>
+            <MaterialIcons name="check-circle" style={styles.selectContactIcon}/>
+          </View>
+        }
+      </View>
     )
   }
 }

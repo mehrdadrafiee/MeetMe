@@ -3,17 +3,26 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   TouchableHighlight,
   ActivityIndicator
 } from 'react-native';
 import * as firebase from 'firebase';
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation';
+import { FormLabel, FormInput, Button } from 'react-native-elements';
+
+import Colors from '../../../constants/Colors';
 
 import styles from '../../commons/styles/common.js';
 import { firebaseInit, login, alertService , signup} from '../helpers';
 
 class LandingViews extends Component {
+  static navigationOptions = {
+    header: (navigation) => {
+      const style = { backgroundColor: Colors.whiteColor };
+
+      return {style};
+    }
+  }
   constructor(props){
     super(props);
     this.state = {
@@ -68,11 +77,14 @@ class LandingViews extends Component {
 
   render() {
     return (
-      <View style={styles.LoginScreenContainer}>
-        <Text style={styles.logoText}>Yelpify</Text>
-        <Text style={styles.screenName}>{this.state.screenName}</Text>
-        <View>
-            <TextInput
+      <View style={styles.root}>
+        <View style={styles.LoginScreenContainer}>
+          <Text style={styles.logoText} fontFamily="catamaran">Yelpify</Text>
+          <Text style={styles.screenName} fontFamily="catamaran">{this.state.screenName}</Text>
+          <View style={styles.item}>
+            <FormLabel fontFamily="catamaran">Email Address</FormLabel>
+            <FormInput
+              selectionColor={Colors.blackColor}
               style={styles.textInputStyle}
               autoFocus={true}
               keyboardAppearance='light'
@@ -80,25 +92,29 @@ class LandingViews extends Component {
               autoCorrect={false}
               autoCapitalize="none"
               onChangeText={(email) => this.setState({email})}
-              placeholder="Email"
               value={this.state.email}
+              fontFamily="catamaran"
             />
-            <TextInput
+          </View>
+          <View style={styles.item}>
+            <FormLabel fontFamily="catamaran">Password</FormLabel>
+            <FormInput
+              selectionColor={Colors.blackColor}
               style={styles.textInputStyle}
               autoCorrect={false}
               autoCapitalize="none"
               secureTextEntry={true}
               onChangeText={(password) => this.setState({password})}
-              placeholder="Password"
               value={this.state.password}
+              fontFamily="catamaran"
             />
-        </View>
-        <View>
-          <Button title="Submit"  style={styles.button} onPress={this.submit}/>
-          <TouchableHighlight onPress={this.switchScreen}>
-            {this.state.screenName === 'Login' ? <Text>Go to singup</Text>: <Text>Go to login</Text> }
-          </TouchableHighlight>
-        </View>
+          </View>
+          <View>
+            <Button backgroundColor={Colors.darkBlueColor} raised fontFamily="catamaran" title="Submit" style={styles.button} onPress={this.submit}/>
+            <TouchableHighlight onPress={this.switchScreen} style={styles.pageInfo}>
+              {this.state.screenName === 'Login' ? <Text fontFamily="catamaran">Haven't registered yet? Go to Register page.</Text>: <Text fontFamily="catamaran">Already registered? Go to Login page.</Text> }
+            </TouchableHighlight>
+          </View>
         {this.state.process &&
           <ActivityIndicator
             style={[styles.centering, styles.gray]}
@@ -106,6 +122,7 @@ class LandingViews extends Component {
             color="white"
           />
         }
+        </View>
       </View>
     )
   }
