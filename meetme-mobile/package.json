@@ -26,6 +26,7 @@
     "react-native-extended-stylesheet": "^0.3.2",
     "react-native-fcm": "^6.2.3",
     "react-native-modal-datetime-picker": "^4.1.0",
+    "react-native-selectme": "^1.2.3",
     "react-native-star-rating": "^1.0.7",
     "react-native-swipeout": "^2.1.1",
     "react-navigation": "^1.0.0-beta.6",

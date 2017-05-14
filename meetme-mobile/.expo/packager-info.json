@@ -1,10 +1,8 @@
 {
-  "exponentServerPort": null,
-  "packagerPort": 19001,
-  "packagerPid": 24021,
-  "exponentServerNgrokUrl": null,
-  "packagerNgrokUrl": "https://packager.9y-eqt.biks152207.meetme-mobile.exp.direct",
-  "ngrokPid": 24032,
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://9y-eqt.biks152207.meetme-mobile.exp.direct"
+  "packagerPort": 19004,
+  "packagerPid": 52123,
+  "expoServerNgrokUrl": "https://9y-eqt.mehrdadrafiee.meetme-mobile.exp.direct",
+  "packagerNgrokUrl": "https://packager.9y-eqt.mehrdadrafiee.meetme-mobile.exp.direct",
+  "ngrokPid": 52141
 }

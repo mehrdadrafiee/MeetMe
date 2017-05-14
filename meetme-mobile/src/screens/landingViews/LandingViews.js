@@ -74,8 +74,11 @@ class LandingViews extends Component {
         <View>
             <TextInput
               style={styles.textInputStyle}
+              autoFocus={true}
+              keyboardAppearance='light'
+              keyboardType='email-address'
               autoCorrect={false}
-              autoCapitalize={false}
+              autoCapitalize="none"
               onChangeText={(email) => this.setState({email})}
               placeholder="Email"
               value={this.state.email}
@@ -83,7 +86,8 @@ class LandingViews extends Component {
             <TextInput
               style={styles.textInputStyle}
               autoCorrect={false}
-              autoCapitalize={false}
+              autoCapitalize="none"
+              secureTextEntry={true}
               onChangeText={(password) => this.setState({password})}
               placeholder="Password"
               value={this.state.password}
