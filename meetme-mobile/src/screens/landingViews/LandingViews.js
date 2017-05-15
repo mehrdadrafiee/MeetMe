@@ -92,14 +92,13 @@ class LandingViews extends Component {
             style={styles.textInputStyle}
             autoFocus={true}
             keyboardAppearance='light'
-            keyboardType='Username'
             autoCorrect={false}
             autoCapitalize="none"
             onChangeText={(username) => this.setState({username})}
             value={this.state.username}
             fontFamily="catamaran"
             />
-            </View>    
+            </View>
           }
           <View style={styles.item}>
             <FormLabel fontFamily="catamaran">Email Address</FormLabel>
