@@ -112,7 +112,7 @@ class HomeScreen extends Component {
     } else if (error.on) {
       return (
         <View>
-          <Text>{error.message}</Text>
+          <Text fontFamily="catamaran">{error.message}</Text>
         </View>
       );
     }

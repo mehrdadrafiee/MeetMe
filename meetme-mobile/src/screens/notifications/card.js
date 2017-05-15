@@ -3,7 +3,8 @@ import {
   Text,
   Picker,
   Button,
-  Linking
+  Linking,
+  View
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -16,7 +17,7 @@ import {
 } from 'react-native-card-view';
 
 import styles from './styles/NotificationsScreen';
-import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService } from '../helpers';
+import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService, deleteNotification } from '../helpers';
 
 import DropDown, {
   Select,
@@ -85,50 +86,54 @@ class CardView extends Component {
   }
 
   componentDidMount() {
-    const Address = [...this.props.data.Address];
-    if (Address.length > 0) {
-      this.setState({Address: [...Address]});
-      this.setState({selectedService: Address[0].name});
-    }
+    // const Address = [...this.props.Address];
+    // console.log(this.props, 'kkkkkkk');
+    // if (Address.length > 0) {
+    //   console.log('address', Address);
+    //   this.setState({Address: [...Address]});
+    //   this.setState({selectedService: Address[0].name});
+    // }
   }
 
   deleteCard(rowData) {
+    console.log(rowData);
+    deleteNotification(rowData.id)
+      .then((res) => {
+        console.log(res);
+      })
   }
 
   render() {
+    console.log(this.props, 'props.....');
+    const deleteCard = this.deleteCard;
     let swipeBtns = [{
-      text: 'Delete',
+      text: 'Discard',
       backgroundColor: 'red',
       underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-      onPress: () => { this.deleteCard(rowData) }
+      onPress: (rowData) => { this.deleteCard(rowData) }
     }];
     return (
-      <Card>
-        <CardContent>
-          <Text>You are invited for a hangout with
-          {this.props.data.Contact.map(contact => <Text key={contact.id} style={{fontWeight: 'bold'}}> {contact.firstName}</Text>)}
-          .Vote for the place that you like the most or swipe left to discard.
-          </Text>
-          <Select
-            width={250}
-            ref="SELECT1"
-            optionListRef={this._getOptionList.bind(this)}
-            defaultValue="Select resturant"
-            onSelect={this.navigate.bind(this)}>
-            {this.state.Address.map( (s, i) => {
-              return <Option value = {s} key={i}>{s.name}</Option>
-            })}
-          </Select>
-          <OptionList ref="OPTIONLIST"/>
-        </CardContent>
-        <CardAction >
-          <Button
-          style={styles.button}
-          onPress={() => {}}
-          title='Send'>
-          </Button>
-        </CardAction>
-      </Card>
+      <Swipeout right={swipeBtns}>
+        <Card>
+          <CardContent>
+            <Text fontFamily="catamaran">You are invited for a hangout with {this.props.username}
+            </Text>
+            <Text>.Vote for the place that you like the most or swipe left to discard.</Text>
+            <View style={{paddingTop: 20}}>
+              {this.props.Address.map((ad, index) =>{
+                return <View key={index} ><Text style={{fontSize: 12}}>{ad.name}</Text></View>;
+              })}
+            </View>
+          </CardContent>
+          <CardAction >
+            <Button
+              style={styles.button}
+              onPress={() => {}}
+              title='Send'>
+            </Button>
+          </CardAction>
+        </Card>
+     </Swipeout>
     )
   }
 }
@@ -141,4 +146,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, null)(CardView);
+export default connect(null, null)(CardView);

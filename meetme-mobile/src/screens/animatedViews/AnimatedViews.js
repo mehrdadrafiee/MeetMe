@@ -245,44 +245,46 @@ class AnimatedViews extends React.Component {
      if (this.props.Address.length > 0 && this.props.Contact.length > 0 && this.state.hasSent === false) {
        this.setState({ hasSent: true });
        const token = [];
+       const saveNotification = [];
+       let combined = [];
+       const displayName = firebase.auth().currentUser.displayName !== null ? firebase.auth().currentUser.displayName: 'a user';
        this.props.Contact.map((contact) => {
          if (contact.emails){
            contact.emails.map((emaildata) => {
              Object.keys(this.state.userByToken)
-             .map((val, key) =>{
-               if (this.state.userByToken[val].email == emaildata.email){
-                 token.push(this.state.userByToken[val].token);
+             .map((key, index) =>{
+               if (this.state.userByToken[key].email == emaildata.email){
+                 console.log(firebase.auth().currentUser, 'display name....');
+                 const invitationData = {
+                   Address: this.props.Address,
+                   Contact: this.props.Contact,
+                   token: token,
+                   type: 'Invitation',
+                   userId: key,
+                   username:  displayName
+                 };
+                 saveNotification.push(saveNotiicationToDatabase('notifications', invitationData));
+                 token.push(sendPushNotification({ token: this.state.userByToken[key].token, type: 'Invitation', username:  displayName }));
                }
              })
            });
          }
        });
-       const invitationData = {
-         Address: this.props.Address,
-         Contact: this.props.Contact,
-         token: token,
-         type: 'Invitation'
-       }
-       saveNotiicationToDatabase(invitationData)
+       combined = [...saveNotification, ...token];
+       Promise.all(combined)
         .then((result) => {
-          console.log('here we are......');
+          alertService('Successfully sent request to join.');
+          this.setState({
+            hasSent: false
+          });
         })
-       sendPushNotification({
-         token,
-         type: 'Invitation'
-       }).then((response) => {
-         alertService('Successfully sent request to join.');
-         this.setState({
-           hasSent: false
-         });
-       })
-       .catch((error) => {
-         alert(error);
-         alertService(`Contact hasn't been registered. Please invite to register.`)
-         this.setState({
-           hasSent: false
-         })
-       })
+        .catch((error) => {
+          alert(error);
+          alertService(`Contact hasn't been registered. Please invite to register.`)
+          this.setState({
+            hasSent: false
+          })
+        });
      }
    }
 
@@ -359,7 +361,7 @@ class AnimatedViews extends React.Component {
       );
     }
     );
-    const userData = firebase.database().ref('users/');
+    const userData = firebase.database().ref(`users/`);
     userData.on('value', (snapshot) => {
       const data = snapshot.val();
       this.setState({userByToken: Object.assign({}, data)});

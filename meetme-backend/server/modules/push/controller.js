@@ -22,13 +22,14 @@ export const addToken = async (req, res) => {
 };
 
 export const send = async (req, res) => {
-  const pushList = [];
-  const tokenNumber = req.body.token.length;
-  for (let i = 0; i < tokenNumber; i++){
-    pushList.push(sendPushNotification({ token: req.body.token[i], body: req.body }));
-  }
-  const response = await Q.all(pushList);
-  return res.json(response);
+  const receipts = await expo.sendPushNotificationsAsync([{
+      to: req.body.token,
+      sound: 'default',
+      badge: 1,
+      body: req.body.type === 'Invitation' ? `You have been invited by ${req.body.username} for hangout in Yelpify` : 'Default message',
+      data: req.body
+  }]);
+  return res.json(receipts);
 }
 
 export const registerDevice = async (req, res) => {
@@ -38,7 +39,7 @@ export const registerDevice = async (req, res) => {
 export const sendPushNotification = async (data) => {
   console.log(data);
   const receipts = await expo.sendPushNotificationsAsync([{
-      to: 'ExponentPushToken[mkfvWDE8xm4vC9kdy9LJYv]',
+      to: 'ExponentPushToken[HM7fnOC8PCHxcJxTr4NMOn]',
       sound: 'default',
       badge: 1,
       body: data.body.type === 'Invitation' ? 'You have been invited for hangout in Yelpify' : 'Default message',

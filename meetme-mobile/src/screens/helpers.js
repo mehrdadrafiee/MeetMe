@@ -79,13 +79,13 @@ export async function registerForPushNotification() {
 
   // This token uniquely identifies this device
   let token = await Notifications.getExponentPushTokenAsync();
-  console.log('token...', token);
   // post  token to our backend so we can use it to send pushes (firebase)
   const response = await saveTokenToDatabase(token);
   return response;
 }
 
 export async function sendPushNotification(data) {
+  console.log(data, 'data');
   let url = getEndPoints('push/send');
   let t = await getStorage('push_token');
   // let token = data.token;
@@ -139,22 +139,32 @@ export async function saveTokenToDatabase(token) {
   return response;
 }
 
-export async function saveNotiicationToDatabase(data) {
+export async function saveNotiicationToDatabase(tableName, data) {
+  delete data.token;
+  const notificationData = Object.assign({}, data);
   const userId = firebase.auth().currentUser.uid;
-  const email = firebase.auth().currentUser.email;
-  const response = await firebase.database().ref(`notifications/${userId}`).set(data);
+  const childRef = await firebase.database().ref(`${tableName}`).child(`${userId}`);
+
+  const newChildRef = childRef.push();
+  const response =  await newChildRef.set(notificationData);
   return response;
 }
 
-export async function saveToDatabase(data) {
+export async function saveToDatabase(tableName,data) {
   const userId = firebase.auth().currentUser.uid;
   const email = firebase.auth().currentUser.email;
-  const instanceRef = firebase.database().ref(`notifications/${userId}`);
-  instanceRef.set(data)
+  const instanceRef = firebase.database().ref(`${tableName}/${userId}`).push();
+  instanceRef.push(data)
   return instanceRef;
 }
 
 export async function getLoggedInUser(data) {
+  const user = await firebase.auth().currentUser;
+  return user;
+}
+
+export async function deleteNotification(key) {
   const userId = firebase.auth().currentUser.uid;
-  return userId;
+  const childRef = await firebase.database().ref(`${tableName}`).child(`${userId}/${key}`).remove();
+  return childRef;
 }

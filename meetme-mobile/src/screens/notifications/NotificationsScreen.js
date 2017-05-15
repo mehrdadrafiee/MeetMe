@@ -54,14 +54,21 @@ class NotificationsScreen extends Component {
   }
 
   componentDidMount() {
+    const userId = firebase.auth().currentUser.uid;
+    // this.props.navigation.setParams({hasNewNotification: true})
     getLoggedInUser()
-      .then((userId) => {
-        console.log(userId);
+      .then((user) => {
         const notificationSnap = firebase.database().ref(`notifications/${userId}`);
         notificationSnap.on('value', (snapshot) => {
           const notifications = snapshot.val();
-          console.log(notifications, 'notifications.....');
-          this.setState({notifications})
+          if (notifications){
+            const newnotifications = [];
+            Object.keys(notifications).map((key, index) => {
+              newnotifications.push(Object.assign({},notifications[key], {id: key }));
+            });
+            console.log(newnotifications, 'new notifications');
+            this.setState({notifications: newnotifications});
+          }
         });
       });
   }
@@ -108,6 +115,7 @@ class NotificationsScreen extends Component {
   // };
 
   render() {
+    console.log(this.state.notifications);
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -130,7 +138,7 @@ class NotificationsScreen extends Component {
                 title='Send'>
               </Button>
             </CardAction>
-          </Card>*/}
+          </Card>
 {/*
           <Text>Fix width : 300</Text>
           <Card styles={{card: {width: 300}}}>
