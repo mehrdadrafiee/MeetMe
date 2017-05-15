@@ -22,9 +22,9 @@ const MyMeetupsList = ({ meetups }) => (
         />
       </CardImage>
       <CardContent>
-        <Text style={styles.title}>{meetup.title}</Text>
-        <Text>{meetup.group.name}</Text>
-        <Text style={styles.meetupCardMetaDate}>
+        <Text style={styles.title} fontFamily="catamaran">{meetup.title}</Text>
+        <Text fontFamily="catamaran">{meetup.group.name}</Text>
+        <Text style={styles.meetupCardMetaDate} fontFamily="catamaran">
           Rating:&nbsp;
           <Icon name="md-star" style={{ fontSize: 15 }} />
           <Icon name="md-star" style={{ fontSize: 15 }} />

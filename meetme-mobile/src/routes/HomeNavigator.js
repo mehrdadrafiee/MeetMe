@@ -23,9 +23,9 @@ export default TabNavigator({
   Chat: {
     screen: ChatScreen
   },
-  AnimatedViews: {
-    screen: HomeScreen
-  }
+  // AnimatedViews: {
+  //   screen: HomeScreen
+  // },
 },
 {
   swipeEnabled: false,

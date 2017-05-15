@@ -56,9 +56,9 @@ class HomeScreen extends Component {
     }
   }
 
-  // state = {
-  //   currentRegion: 'unknown'
-  // }
+  state = {
+    currentRegion: null
+  }
 
   watchID: ?number = null;
 
@@ -112,27 +112,29 @@ class HomeScreen extends Component {
     } else if (error.on) {
       return (
         <View>
-          <Text>{error.message}</Text>
+          <Text fontFamily="catamaran">{error.message}</Text>
         </View>
       );
     }
     return (
       <View style={styles.root}>
-        <Components.MapView
+        {this.state.currentRegion &&
+          <Components.MapView
           style={styles.mapContainer}
           region={this.state.currentRegion}
           showsUserLocation={true}>
           <Components.MapView.Marker
-            coordinate={{latitude: 34.0195, longitude: -118.4912}}
-            title={"title"}
-            description={"description"}
+          coordinate={{latitude: 34.0195, longitude: -118.4912}}
+          title={"title"}
+          description={"description"}
           />
           <Components.MapView.Marker
-            coordinate={{latitude: 34, longitude: -118.45}}
-            title={"title"}
-            description={"description"}
+          coordinate={{latitude: 34, longitude: -118.45}}
+          title={"title"}
+          description={"description"}
           />
-        </Components.MapView>
+          </Components.MapView>
+        }
         <View style={styles.bottomContainer}>
           <MyMeetupsList meetups={data} />
         </View>

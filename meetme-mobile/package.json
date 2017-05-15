@@ -12,6 +12,7 @@
     "@expo/vector-icons": "~4.0.0",
     "axios": "^0.15.3",
     "expo": "^14.0.0",
+    "firebase": "^3.9.0",
     "immutable": "^3.8.1",
     "native-base": "^2.0.12",
     "react": "~15.4.0",
@@ -20,16 +21,18 @@
     "react-native-communications": "^2.2.1",
     "react-native-contacts": "^0.8.1",
     "react-native-debugger-open": "^0.3.2",
-    "react-native-device-info": "^0.10.2",
     "react-native-elements": "^0.10.2",
     "react-native-extended-stylesheet": "^0.3.2",
     "react-native-fcm": "^6.2.3",
     "react-native-modal-datetime-picker": "^4.1.0",
+    "react-native-selectme": "^1.2.3",
     "react-native-star-rating": "^1.0.7",
+    "react-native-swipeout": "^2.1.1",
     "react-navigation": "^1.0.0-beta.6",
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
-    "redux-promise-middleware": "^4.2.0"
+    "redux-promise-middleware": "^4.2.0",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "redux-logger": "^2.8.2"

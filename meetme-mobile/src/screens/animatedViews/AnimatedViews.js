@@ -12,6 +12,8 @@ import {
 
 import { connect } from 'react-redux';
 
+import * as firebase from 'firebase';
+
 import { MaterialIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 
@@ -27,7 +29,7 @@ import { GooglePlacesAPI } from '../../config';
 
 import PriceMarker from './AnimatedPriceMarker';
 
-import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService } from '../helpers';
+import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService, saveNotiicationToDatabase } from '../helpers';
 
 const { width, height } = Dimensions.get('window');
 
@@ -216,6 +218,7 @@ class AnimatedViews extends React.Component {
       scale,
       translateY,
       markers,
+      userByToken: {},
       hasSent: false,
       region: new MapView.AnimatedRegion({
         latitude: LATITUDE,
@@ -240,21 +243,48 @@ class AnimatedViews extends React.Component {
 
    sendPush() {
      if (this.props.Address.length > 0 && this.props.Contact.length > 0 && this.state.hasSent === false) {
-       this.setState({
-         hasSent: true
-       })
-       sendPushNotification({
-         Address: this.props.Address,
-         Contact: this.props.Contact
-       }).then((response) => {
-         console.log(response, '....response');
-         alertService('Info', 'Successfully sent request to join.')
-       })
-       .catch(() => {
-         this.setState({
-           hasSent: false
-         })
-       })
+       this.setState({ hasSent: true });
+       const token = [];
+       const saveNotification = [];
+       let combined = [];
+       const displayName = firebase.auth().currentUser.displayName !== null ? firebase.auth().currentUser.displayName: 'a user';
+       this.props.Contact.map((contact) => {
+         if (contact.emails){
+           contact.emails.map((emaildata) => {
+             Object.keys(this.state.userByToken)
+             .map((key, index) =>{
+               if (this.state.userByToken[key].email == emaildata.email){
+                 console.log(firebase.auth().currentUser, 'display name....');
+                 const invitationData = {
+                   Address: this.props.Address,
+                   Contact: this.props.Contact,
+                   token: token,
+                   type: 'Invitation',
+                   userId: key,
+                   username:  displayName
+                 };
+                 saveNotification.push(saveNotiicationToDatabase('notifications', invitationData));
+                 token.push(sendPushNotification({ token: this.state.userByToken[key].token, type: 'Invitation', username:  displayName }));
+               }
+             })
+           });
+         }
+       });
+       combined = [...saveNotification, ...token];
+       Promise.all(combined)
+        .then((result) => {
+          alertService('Successfully sent request to join.');
+          this.setState({
+            hasSent: false
+          });
+        })
+        .catch((error) => {
+          alert(error);
+          alertService(`Contact hasn't been registered. Please invite to register.`)
+          this.setState({
+            hasSent: false
+          })
+        });
      }
    }
 
@@ -331,8 +361,12 @@ class AnimatedViews extends React.Component {
       );
     }
     );
+    const userData = firebase.database().ref(`users/`);
+    userData.on('value', (snapshot) => {
+      const data = snapshot.val();
+      this.setState({userByToken: Object.assign({}, data)});
+    });
     this.props.navigation.setParams({ sendPush: this.sendPush });
-
   }
 
   componentWillReceiveProps(nextProps) {

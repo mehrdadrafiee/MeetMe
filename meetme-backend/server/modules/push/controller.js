@@ -2,6 +2,8 @@ import Push from './model';
 import { Meetup } from '../meetups';
 import util from 'util';
 import Expo from 'exponent-server-sdk';
+import Q from 'q';
+let expo = new Expo();
 
 export const addToken = async (req, res) => {
   req.checkBody('token', 'Token required').notEmpty();
@@ -20,27 +22,29 @@ export const addToken = async (req, res) => {
 };
 
 export const send = async (req, res) => {
-  // check to see if this is valid expo token
-  let token = req.body.token.slice(req.body.token.indexOf('[') + 1, req.body.token.length-1);
-  let isPushToken = Expo.isExponentPushToken(token);
-  // Create a new Expo SDK client
-  let expo = new Expo();
-
-  try {
-    let receipts = await expo.sendPushNotificationsAsync([{
-      // The push token for the app user to whom you want to send the notification
+  const receipts = await expo.sendPushNotificationsAsync([{
       to: req.body.token,
       sound: 'default',
       badge: 1,
-      body: 'This is a test notification',
+      body: req.body.type === 'Invitation' ? `You have been invited by ${req.body.username} for hangout in Yelpify` : 'Default message',
       data: req.body
-    }]);
-    return res.json(receipts);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
+  }]);
+  return res.json(receipts);
 }
 
 export const registerDevice = async (req, res) => {
 
+}
+
+export const sendPushNotification = async (data) => {
+  console.log(data);
+  const receipts = await expo.sendPushNotificationsAsync([{
+      to: 'ExponentPushToken[HM7fnOC8PCHxcJxTr4NMOn]',
+      sound: 'default',
+      badge: 1,
+      body: data.body.type === 'Invitation' ? 'You have been invited for hangout in Yelpify' : 'Default message',
+      data: data.body
+  }]);
+  console.log('receipts', receipts);
+  return receipts;
 }
