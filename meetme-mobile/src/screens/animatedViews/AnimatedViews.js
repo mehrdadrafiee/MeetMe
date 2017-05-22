@@ -29,7 +29,7 @@ import { GooglePlacesAPI } from '../../config';
 
 import PriceMarker from './AnimatedPriceMarker';
 
-import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService, saveNotiicationToDatabase } from '../helpers';
+import { getLatLongByAddress, getNearbyResturant, sendPushNotification, alertService, saveNotificationToDatabase, getStorage } from '../helpers';
 
 const { width, height } = Dimensions.get('window');
 
@@ -218,6 +218,7 @@ class AnimatedViews extends React.Component {
       scale,
       translateY,
       markers,
+      userToken: null,
       userByToken: {},
       hasSent: false,
       region: new MapView.AnimatedRegion({
@@ -244,26 +245,28 @@ class AnimatedViews extends React.Component {
    sendPush() {
      if (this.props.Address.length > 0 && this.props.Contact.length > 0 && this.state.hasSent === false) {
        this.setState({ hasSent: true });
-       const token = [];
        const saveNotification = [];
        let combined = [];
+       const token = [];
+       const currentUser = firebase.auth().currentUser.email;
+       const userId = firebase.auth().currentUser.uid;
        const displayName = firebase.auth().currentUser.displayName !== null ? firebase.auth().currentUser.displayName: 'a user';
        this.props.Contact.map((contact) => {
          if (contact.emails){
            contact.emails.map((emaildata) => {
              Object.keys(this.state.userByToken)
              .map((key, index) =>{
-               if (this.state.userByToken[key].email == emaildata.email){
-                 console.log(firebase.auth().currentUser, 'display name....');
-                 const invitationData = {
+               if (this.state.userByToken[key].email === emaildata.email) {
+                 let invitationData = {
                    Address: this.props.Address,
                    Contact: this.props.Contact,
-                   token: token,
                    type: 'Invitation',
                    userId: key,
-                   username:  displayName
+                   username:  displayName,
+                   creatorToken: this.state.userToken,
+                   creatorId: userId
                  };
-                 saveNotification.push(saveNotiicationToDatabase('notifications', invitationData));
+                 saveNotification.push(saveNotificationToDatabase('notifications', invitationData, userId));
                  token.push(sendPushNotification({ token: this.state.userByToken[key].token, type: 'Invitation', username:  displayName }));
                }
              })
@@ -362,10 +365,17 @@ class AnimatedViews extends React.Component {
     }
     );
     const userData = firebase.database().ref(`users/`);
+    if (!userData) {
+      return;
+    }
     userData.on('value', (snapshot) => {
       const data = snapshot.val();
       this.setState({userByToken: Object.assign({}, data)});
     });
+    getStorage('token')
+      .then((token) => {
+        this.setState({userToken: token});
+      })
     this.props.navigation.setParams({ sendPush: this.sendPush });
   }
 

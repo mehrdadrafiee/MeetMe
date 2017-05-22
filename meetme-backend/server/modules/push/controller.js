@@ -26,7 +26,7 @@ export const send = async (req, res) => {
       to: req.body.token,
       sound: 'default',
       badge: 1,
-      body: req.body.type === 'Invitation' ? `You have been invited by ${req.body.username} for hangout in Yelpify` : 'Default message',
+      body: req.body.type === 'Invitation' ? `You have been invited by ${req.body.username} for hangout in Yelpify` : `${req.body.username} has sent you the rating.`,
       data: req.body
   }]);
   return res.json(receipts);

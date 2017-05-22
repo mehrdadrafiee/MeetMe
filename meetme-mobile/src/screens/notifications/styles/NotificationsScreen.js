@@ -1,5 +1,7 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Colors from '../../../../constants/Colors';
+import Dimensions from 'react-native';
+const { width, height } = Dimensions;
 
 const styles = EStyleSheet.create({
   // root: {
@@ -7,11 +9,10 @@ const styles = EStyleSheet.create({
   //   flex: 1
   // }
   container: {
-    flex: 1,
-    marginBottom: 60
+    flex: 1
   },
   title: {
-    fontSize: 38,
+    fontSize: 18,
     backgroundColor: 'transparent'
   },
   picker: {
@@ -23,6 +24,13 @@ const styles = EStyleSheet.create({
   },
   card: {
     width: 300
+  },
+  ActivityIndicator: {
+    marginTop: 20
+  },
+  noNotification: {
+    textAlign: 'center',
+    fontSize: 16
   }
 });
 

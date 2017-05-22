@@ -85,9 +85,8 @@ export async function registerForPushNotification() {
 }
 
 export async function sendPushNotification(data) {
-  console.log(data, 'data');
   let url = getEndPoints('push/send');
-  let t = await getStorage('push_token');
+  // let t = await getStorage('push_token');
   // let token = data.token;
   // let params = Object.assign(data, { token });
   const response = await HTTP(url, 'POST', data);
@@ -132,6 +131,7 @@ export async function signup(email, pass) {
 export async function saveTokenToDatabase(token) {
   const userId = firebase.auth().currentUser.uid;
   const email = firebase.auth().currentUser.email;
+  const savedToken = await setStorage('token', token);
   const response = await firebase.database().ref(`users/${userId}`).set({
     token,
     email
@@ -139,12 +139,9 @@ export async function saveTokenToDatabase(token) {
   return response;
 }
 
-export async function saveNotiicationToDatabase(tableName, data) {
-  delete data.token;
+export async function saveNotificationToDatabase(tableName, data, userId) {
   const notificationData = Object.assign({}, data);
-  const userId = firebase.auth().currentUser.uid;
   const childRef = await firebase.database().ref(`${tableName}`).child(`${userId}`);
-
   const newChildRef = childRef.push();
   const response =  await newChildRef.set(notificationData);
   return response;
@@ -163,8 +160,15 @@ export async function getLoggedInUser(data) {
   return user;
 }
 
-export async function deleteNotification(key) {
+export async function deleteData(tableName,key) {
   const userId = firebase.auth().currentUser.uid;
   const childRef = await firebase.database().ref(`${tableName}`).child(`${userId}/${key}`).remove();
   return childRef;
+}
+
+export async function updateNotification(notificationId, data) {
+  const userId = firebase.auth().currentUser.uid;
+  const childRef = await firebase.database().ref().child('notifications/' + userId + '/' + notificationId);
+  const response = await childRef.set(data);
+  return response;
 }
