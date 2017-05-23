@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, Button, Image } from 'react-native';
+import { ScrollView, View, Text, Button, Image, ActivityIndicator } from 'react-native';
+import * as firebase from 'firebase';
 // import { DropDown } from 'react-native-dropdown';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
 import styles from './styles/NotificationsScreen';
 import { Permissions, Notifications } from 'expo';
 import CardView from './card';
+
+import { getLoggedInUser, updateNotification, saveNotificationToDatabase, sendPushNotification } from '../helpers';
 
 class NotificationsScreen extends Component {
   static navigationOptions = {
@@ -34,27 +37,81 @@ class NotificationsScreen extends Component {
 
     this.state = {
       canada: '',
-      notifications: []
+      notifications: [],
+      isLoading: true
     };
     this._handleNotification = this._handleNotification.bind(this);
+    this.updateRating = this.updateRating.bind(this);
+    this.deleteNotification = this.deleteNotification.bind(this);
+    this.sendRating = this.sendRating.bind(this);
+  }
+
+  deleteNotification(id) {
+    const notifications = this.state.notifications.filter((notification) => {
+      return notification.id != id;
+    });
+    this.setState({notifications})
+  }
+
+  sendRating(data) {
+    const creatorId = data.creatorId;
+    const token = data.creatorToken;
+    const username = firebase.auth().currentUser.username ? firebase.auth().currentUser.username : 'A user';
+    const replyData = {
+      username:  username,
+      type: 'Reply',
+      Address: data.Address
+    };
+    saveNotificationToDatabase('notifications', replyData, creatorId);
+    sendPushNotification({ token: token, type: 'Reply', username: username })
+  }
+
+  updateRating(rating, addressId, notificationId) {
+    const add = this.state.notifications.map((notification) => {
+      if (notification.id === notificationId){
+        notification.Address.map((address, index) => {
+          if (index === addressId) {
+            address.userRating = rating;
+          }
+        });
+        return notification
+      }
+    })
+    updateNotification(notificationId, add[0])
+      .then((result) => {
+      })
   }
 
   _handleNotification = (notifications) => {
-    const newnotifications = [...this.state.notifications]
-    newnotifications.push(notifications);
     // changes color of icon when notification arrives
     this.props.navigation.setParams({hasNotification: true})
-    this.setState({notifications: newnotifications});
   };
 
   componentDidMount() {
-    // updatePosition(this.refs['SELECT1']);
-    // updatePosition(this.refs['OPTIONLIST']);
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
 
-  _getOptionList() {
-    return this.refs['OPTIONLIST'];
+  componentDidMount() {
+    const userId = firebase.auth().currentUser.uid;
+    // this.props.navigation.setParams({hasNewNotification: true})
+    if (!userId){
+      return;
+    }
+    getLoggedInUser()
+      .then((user) => {
+        const notificationSnap = firebase.database().ref(`notifications/${userId}`);
+        notificationSnap.on('value', (snapshot) => {
+          const notifications = snapshot.val();
+          if (notifications){
+            const newnotifications = [];
+            Object.keys(notifications).map((key, index) => {
+              newnotifications.push(Object.assign({},notifications[key], {id: key}));
+            });
+            this.setState({notifications: newnotifications});
+          }
+          this.setState({ isLoading: false });
+        });
+      });
   }
 
   _canada(province) {
@@ -65,139 +122,24 @@ class NotificationsScreen extends Component {
     });
   }
 
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = PropertiesStore.getState();
-  //   this.onChange = this.onChange.bind(this)
-  // }
-
-  // componentDidMount() {
-  //   PropertiesStore.listen(this.onChange);
-
-  //   PropertiesActions.getList();
-  // }
-
-  // componentWillUnmount() {
-  //   PropertiesStore.unlisten(this.onChange);
-  // }
-
-  // onChange(state) {
-  //   this.setState(state);
-  // }
-
-  // state = {
-  //   selected1: 'key1',
-  //   selected2: 'key1',
-  //   selected3: 'key1',
-  //   color: 'red',
-  //   mode: Picker.MODE_DIALOG,
-  // };
-
   render() {
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          {this.state.notifications.length === 0 &&
-            <Text>No Notification</Text>
-          }
-          {this.state.notifications.length > 0 && this.state.notifications.map((card, key) => <CardView {...card} key={key} />)}
-          {/*<Card>
-            <CardContent>
-              <Text>You are invited for a hangout with
-                <Text style={{fontWeight: 'bold'}}>
-                  Sarah Smith
-                </Text>. Vote for the place that you like the most or swipe left to discard.
-              </Text>
-            </CardContent>
-            <CardAction >
-              <Button
-                style={styles.button}
-                onPress={() => {}}
-                title='Send'>
-              </Button>
-            </CardAction>
-          </Card>*/}
-{/*
-          <Text>Fix width : 300</Text>
-          <Card styles={{card: {width: 300}}}>
-            <CardTitle>
-              <Text style={styles.title}>Card Title</Text>
-            </CardTitle>
-            <CardContent>
-              <Text>Content</Text>
-            </CardContent>
-            <CardAction >
-              <Button
-                style={styles.button}
-                onPress={() => {}}
-                title='button 1'>
-              </Button>
-              <Button
-                style={styles.button}
-                onPress={() => {}}
-                title='button 2'>
-              </Button>
-            </CardAction>
-          </Card>*/}
-
-          {/*<Text>Card Image + Card Title + Card Content + Card Action</Text>
-          <Card>
-            <CardImage>
-              <Image
-                style={{width: 300, height: 200}}
-                source={{uri: 'https://getmdl.io/assets/demos/image_card.jpg'}}
-              />
-            </CardImage>
-            <CardTitle>
-              <Text style={styles.title}>Card Title</Text>
-            </CardTitle>
-            <CardContent>
-              <Text>Content</Text>
-              <Text>Content</Text>
-              <Text>Content</Text>
-              <Text>Content</Text>
-              <Text>Content</Text>
-              <Text>Content</Text>
-            </CardContent>
-            <CardAction>
-              <Button
-                style={styles.button}
-                onPress={() => {}}
-                title='button 1'>
-              </Button>
-              <Button
-                style={styles.button}
-                styleDisabled={{color: 'red'}}
-                onPress={() => {}}
-                title='button 2'>
-              </Button>
-            </CardAction>
-          </Card>
-
-          <Text>Card Image</Text>
-          <Card>
-            <CardImage>
-              <Image
-                style={{width: 256, height: 256}}
-                source={{uri: 'https://getmdl.io/assets/demos/image_card.jpg'}}
-              >
-                <Text style={[styles.title, {alignSelf: 'center'}]}>Beautiful Girl</Text>
-              </Image>
-            </CardImage>
-          </Card>
-
-          <Text>Card Image</Text>
-          <Card>
-            <CardImage>
-              <Image
-                style={{width: 256, height: 256}}
-                source={{uri: 'https://static.pexels.com/photos/59523/pexels-photo-59523.jpeg'}}
-              />
-            </CardImage>
-          </Card>*/}
-        </View>
-      </ScrollView>
+      <View style={{flex: 1}}>
+        {this.state.isLoading && <ActivityIndicator style={styles.ActivityIndicator}/>}
+        {!this.state.isLoading &&
+          <ScrollView>
+                <View style={styles.container}>
+                {this.state.notifications.length === 0 &&
+                  <Text style={styles.noNotification}>No Notification</Text>
+                }
+                {this.state.notifications.map((card, key) => {
+                  return (
+                      <CardView {...card} key={key} sendRating={this.sendRating.bind(this)}  deleteNotification={this.deleteNotification.bind(this)} updateRating={this.updateRating.bind(this)}/>
+                  );
+                })}
+                </View>
+          </ScrollView> }
+      </View>
     );
   }
 }

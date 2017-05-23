@@ -24,7 +24,6 @@ class MeetupApi {
       const { data } = await axios.get(this.path);
       return data.meetups;
     } catch (e) {
-      console.log(e);
     }
   }
 }

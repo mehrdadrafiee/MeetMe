@@ -24,7 +24,7 @@ export const ListAddress = (props) => {
     address =  'Not found';
   }
   return (
-    <Text style={styles.location}>
+    <Text style={styles.location} fontFamily="catamaran">
       <MaterialIcons name={props.type} style={styles.locationIcon}/> {convertToUpperCase(props.type)}: {address}
     </Text>
   )

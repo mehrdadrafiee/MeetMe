@@ -2,5 +2,9 @@
   "photoKey": "AIzaSyAOAbjggZ_qo3xD4BJfGkBkzL2kG4aB4o8",
   "GooglePlacesAPI": "AIzaSyCm-hH33p4t6h5y2dREPVakJZdW652TZJ8",
   "development_api": "http:192.168.1.2:3000/api/",
-  "production_api": "http:192.168.1.2:3000/api/"
+  "production_api": "http:192.168.1.2:3000/api/",
+  "apiKey": "AIzaSyDZLdNZpa4qU6nngayuvGckbeiVTsnuFsg",
+  "authDomain": "meetme-bba81.firebaseapp.com",
+  "databaseURL": "https://meetme-bba81.firebaseio.com",
+  "storageBucket": "meetme-bba81.appspot.com"
 }
